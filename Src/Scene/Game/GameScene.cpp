@@ -3,10 +3,12 @@
 #include<DxLib.h>
 #include<cmath>
 
+#include"../../Utility/Utility.h"
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
 #include"../../Manager/Camera/Camera.h"
 
+#include"Start.h"
 #include"../../Object/Stage/Stage.h"
 //#include"../../Object/Player/PlayerBase.h"
 #include"../../Object/Player/CPU.h"
@@ -24,7 +26,9 @@ ShakeSize GameScene::shakeSize_ = ShakeSize::MEDIUM;
 
 GameScene::GameScene():
 	mainScreen_(-1),
-	stage_()
+	stage_(),
+	timeImg_(-1),
+	limitTime_(0.0f)
 {
 }
 
@@ -35,6 +39,8 @@ GameScene::~GameScene()
 void GameScene::Load(void)
 {
 	mainScreen_ = MakeScreen(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y);
+
+	Utility::LoadImg(timeImg_, "Data/Image/Time.png");
 
 	stage_ = std::make_shared<Stage>();
 	stage_->Load();
@@ -58,6 +64,7 @@ void GameScene::Load(void)
 }
 void GameScene::Init(void)
 {
+	limitTime_ = (float)LIMIT_TIME;
 
 	// ヒットストップカウンターの初期化
 	hitStop_ = 0;
@@ -71,6 +78,8 @@ void GameScene::Init(void)
 	shakeKinds_ = ShakeKinds::DIAG;
 	shakeSize_ = ShakeSize::MEDIUM;;
 	//--------------------------------------------------------------------------------
+
+	SceneManager::GetInstance().PushScene(std::make_shared<Start>());
 }
 void GameScene::Update(void)
 {
@@ -89,6 +98,14 @@ void GameScene::Update(void)
 	}
 	ColisionWave();
 
+
+
+
+	limitTime_ -= SceneManager::GetInstance().GetDeltaTime();
+	if (limitTime_ <= 0.0f) {
+		// 時間切れ
+
+	}
 }
 void GameScene::Draw(void)
 {
@@ -99,8 +116,10 @@ void GameScene::Draw(void)
 
 	//描画処理-----------------------------------------
 	using app = Application;
-	int x = app::SCREEN_SIZE_X / 2;
-	int y = app::SCREEN_SIZE_Y / 2;
+	int xx = app::SCREEN_SIZE_X;
+	int yy = app::SCREEN_SIZE_Y;
+	int x = xx / 2;
+	int y = yy / 2;
 
 	stage_->Draw();
 
@@ -109,6 +128,10 @@ void GameScene::Draw(void)
 		players_[i]->Draw();
 	}
 
+	DrawRotaGraph(x, 70, 2, 0, timeImg_, true);
+	SetFontSize(100);
+	DrawFormatString(x - 130, 30, 0xffffff, "%.2f", limitTime_);
+	SetFontSize(16);
 	DrawString(0, 0, "ゲームシーン", 0xffffff);
 	//-------------------------------------------------
 

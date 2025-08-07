@@ -13,6 +13,8 @@ public:
 
 	static constexpr int PLAYER_MAX = 4;	// プレイヤーの最大数
 
+	static constexpr int LIMIT_TIME = 60;
+
 	GameScene();
 	~GameScene()override;
 
@@ -54,6 +56,9 @@ private:
 	std::shared_ptr<PlayerBase> players_[PLAYER_MAX];
 
 	void ColisionWave(void);	// 当たり判定チェック
+
+	int timeImg_;
+	float limitTime_;
 
 	// ヒットストップカウンター
 	static int hitStop_;

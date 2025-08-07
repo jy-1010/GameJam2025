@@ -126,6 +126,14 @@
     <ClCompile Include="Src\Object\Wave.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Scene\Game\Start.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\Game\Explanat.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+         <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Src\Object\Player\CPU.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -202,6 +210,14 @@
     </ClInclude>
     <ClInclude Include="Src\Object\Wave.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\Game\Start.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\Game\Explanat.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+          <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Src\Object\Player\CPU.h">
       <Filter>ヘッダー ファイル</Filter>
