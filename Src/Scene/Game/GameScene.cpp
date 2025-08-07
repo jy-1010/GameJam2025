@@ -173,7 +173,7 @@ void GameScene::ColisionWave(void)
 			{
 				if (abs(distance - waveRadius) < PlayerBase::RADIUS)
 				{
-					player1->Damage();	//ダメージを受ける
+					player1->Damage(VSub(player1->GetInitPos(),player2->GetInitPos()));	//ダメージを受ける
 					isHit = true;
 					break;
 				}

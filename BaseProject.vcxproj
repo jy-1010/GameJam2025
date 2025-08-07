@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Scene\Result\ResultScene.cpp" />
     <ClCompile Include="Src\Object\UI\LifeUI.cpp" />
     <ClCompile Include="Src\Object\Player\CPU.cpp" />
     <ClCompile Include="Src\Object\Player\PlayerBase.cpp" />
@@ -48,6 +49,7 @@
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Scene\Result\ResultScene.h" />
     <ClInclude Include="Src\Object\UI\LifeUI.h" />
     <ClInclude Include="Src\Object\Player\CPU.h" />
     <ClInclude Include="Src\Object\Player\PlayerBase.h" />

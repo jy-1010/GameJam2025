@@ -79,21 +79,28 @@ void PlayerBase::Draw(void)
 		wave->Draw();
 	}
 	//モデル描画
-	if (!IsDeath())
-	{
-		MV1DrawModel(modelId_);
-	}
+	MV1DrawModel(modelId_);
 	//ライフUIを描画
 	lifeUI_->Draw();
 }
 
-void PlayerBase::Damage(void)
+void PlayerBase::Damage(VECTOR vec)
 {
 	if (isInvincible_) { return; }	//無敵状態ならダメージを受けない
 	isInvincible_ = true;	//無敵状態にする
 	hp_--;
 	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
-	ChengeState(STATE::DAMAGE);
+	if (hp_ <= 0)
+	{
+		ChengeState(STATE::DEATH);	//HPが0以下なら死亡状態へ
+		return;
+	}
+	else
+	{
+		deathVec_ = Utility::VNormalize(vec);	//死亡時のベクトルを設定
+		ChengeState(STATE::DAMAGE);
+		return;
+	}
 }
 
 std::vector<float> PlayerBase::GetWaveRadius(void) const
@@ -186,6 +193,8 @@ void PlayerBase::UpdateDamage(void)
 
 void PlayerBase::UpdateDeath(void)
 {
+	pos_ = VAdd(pos_, VScale(deathVec_, DEATH_MOVE_SPEED_XZ));	//死亡時の移動
+	pos_.y += DEATH_MOVE_SPEED_Y;	//死亡時の移動
 }
 
 void PlayerBase::ChengeState(STATE state)

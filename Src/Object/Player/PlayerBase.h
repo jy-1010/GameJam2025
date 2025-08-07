@@ -47,16 +47,21 @@ public:
 	const int GetHp(void) { return hp_; }
 	bool IsLand(void) { return state_ == STATE::LAND; }
 	bool IsDeath(void) { return state_ == STATE::DEATH; }
-	void Damage(void);
+	void Damage(VECTOR vec);
 
 	VECTOR GetInitPos(void) const { return initPos_; }
 	std::vector<float> GetWaveRadius(void) const;
 
 protected:
+
+	static constexpr float DEATH_MOVE_SPEED_XZ = 20.0f;	//死亡時の移動速度
+	static constexpr float DEATH_MOVE_SPEED_Y = 10.0f;	//死亡時の移動速度
+
 	int modelId_;
 	VECTOR pos_;
 	VECTOR rot_;
 	VECTOR initPos_;
+	VECTOR deathVec_;	//死亡時のベクトル(ダメージを受けた方向)
 	int playerNum_;
 	int color_;
 	STATE state_;
