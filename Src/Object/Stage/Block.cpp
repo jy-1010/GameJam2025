@@ -18,8 +18,6 @@ void Block::Create(TYPE type, int baseModelId, int mapX, int mapZ)
 	// モデルのハンドルID
 	modelId_ = MV1DuplicateModel(baseModelId);
 
-	// 1ブロックあたりの大きさ
-	const float SIZE_BLOCK = SIZE_BLOCK;
 
 	// 1ブロックあたりの半分の大きさ
 	const float SIZE_HALF_BLOCK = (SIZE_BLOCK / 2.0f);
