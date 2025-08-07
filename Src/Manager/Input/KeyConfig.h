@@ -85,6 +85,9 @@ public:
 		MIDIUM_JUMP,
 		SLOW_JUMP,
 		JUMP,
+		SERECT_RIFHT,
+		SERECT_LEFT,
+		DECISION,
 		MAX,
 	};
 

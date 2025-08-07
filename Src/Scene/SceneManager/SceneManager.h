@@ -53,13 +53,14 @@ public:
 
 	// ゲーム終了
 	void GameEnd(void) { isGameEnd_ = true; }
+	bool GetGameEnd(void) { return isGameEnd_; }
 
 	// デルタタイムの取得
 	float GetDeltaTime(void) const;
 	void ResetDeltaTime(void);
 
 	// ゲーム終了取得
-	bool GetGameEnd(void) { return isGameEnd_; }
+	
 
 	std::weak_ptr<Camera> GetCamera(void) { return camera_; }
 

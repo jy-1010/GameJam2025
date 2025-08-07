@@ -3,8 +3,8 @@
 #include<DxLib.h>
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
+#include"../../Manager/Input/KeyConfig.h"
 #include"../../Manager/Camera/Camera.h"
-#include"../../Manager/Input/InputManager.h"
 
 
 TitleScene::TitleScene()
@@ -22,6 +22,7 @@ void TitleScene::Load(void)
 void TitleScene::Init(void)
 {
 	title_Img = LoadGraph("Data/Image/Title.png");
+	con_Img = LoadGraph("Data/Image/co.png");
 
 	modeId_ = MODE::PLAY;
 
@@ -32,8 +33,8 @@ void TitleScene::Init(void)
 void TitleScene::Update(void)
 {
 	
-	
-	if(CheckHitKey(KEY_INPUT_RIGHT))
+	auto& keyCon = KeyConfig::GetInstance();
+	if(keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::SERECT_RIFHT,KeyConfig::JOYPAD_NO::PAD1))
 	{
 		switch (modeId_)
 		{
@@ -42,7 +43,7 @@ void TitleScene::Update(void)
 		case MODE::EXIT:       modeId_ = MODE::PLAY; break;
 		}
 	}
-	if (CheckHitKey(KEY_INPUT_LEFT))
+	if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::SERECT_LEFT, KeyConfig::JOYPAD_NO::PAD1))
 	{
 		switch (modeId_)
 		{
@@ -53,10 +54,33 @@ void TitleScene::Update(void)
 	}
 	
 
-	if (CheckHitKey(KEY_INPUT_SPACE))
+	switch (modeId_)
 	{
-		SceneManager::GetInstance().ChangeScene(SCENE_ID::GAME);
+	case TitleScene::MODE::PLAY:
+		
+		if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::DECISION, KeyConfig::JOYPAD_NO::PAD1))
+		{
+			SceneManager::GetInstance().ChangeScene(SCENE_ID::GAME);
+		}
+		
+	case TitleScene::MODE::EXIT:
+		if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::DECISION, KeyConfig::JOYPAD_NO::PAD1))
+		{
+			SceneManager::GetInstance().GameEnd();
+		}
+		break;
+	case TitleScene::MODE::OPERATION:
+
+		
+		DrawGraph(0, 0, con_Img, true);
+
+
+		break;
+	default:
+		break;
 	}
+
+	
 	
 	
 
@@ -78,6 +102,10 @@ void TitleScene::Draw(void)
 		break;
 	case TitleScene::MODE::OPERATION:
 		DrawString(0, 0, "ê‡ñæÇ÷", 0xffffff);
+		DrawExtendGraph(0, 0, 400, 200, con_Img,true);
+
+		DrawGraph(0, 0, con_Img, true);
+		
 		break;
 	default:
 		break;

@@ -31,11 +31,14 @@ private:
 
 	//タイトル画像ハンドル
 	int title_Img;
+
+	int con_Img;
 	
 	// シーンID
 	MODE modeId_;
 
+	bool gameExit_;
 
-	bool isRightKeyAlive ;
+	bool drawAlive_;
 
 };
