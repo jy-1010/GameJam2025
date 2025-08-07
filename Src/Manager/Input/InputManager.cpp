@@ -2,6 +2,27 @@
 #include <cmath>
 #include "../../Application.h"
 #include "InputManager.h"
+
+InputManager* InputManager::instance_ = nullptr;
+
+void InputManager::CreateInstance(void)
+{
+	if (instance_ == nullptr)
+	{
+		instance_ = new InputManager();
+	}
+	instance_->Init();
+}
+
+InputManager& InputManager::GetInstance(void)
+{
+	if (instance_ == nullptr)
+	{
+		InputManager::CreateInstance();
+	}
+	return *instance_;
+}
+
 void InputManager::Init(void)
 {
 
@@ -158,6 +179,9 @@ void InputManager::Release(void)
 	keyInfos_.clear();
 	mouseInfos_.clear();
 	stickInfos_.clear();
+
+	// インスタンスのメモリ解放
+	delete instance_;
 }
 
 void InputManager::Add(int key)
