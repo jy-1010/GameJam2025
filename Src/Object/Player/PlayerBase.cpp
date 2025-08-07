@@ -1,3 +1,4 @@
+#include <DxLib.h>
 #include "../../Utility/Utility.h"
 #include "../../Manager/Input/KeyConfig.h"
 #include "PlayerBase.h"
@@ -101,10 +102,12 @@ void PlayerBase::ChengeStateDrop(void)
 
 void PlayerBase::ChengeStateDamage(void)
 {
+	stateUpdate_ = std::bind(&PlayerBase::UpdateDamage, this);
 }
 
 void PlayerBase::ChengeStateDeath(void)
 {
+	stateUpdate_ = std::bind(&PlayerBase::UpdateDeath, this);
 }
 
 void PlayerBase::MakeWave(Wave::SPEED_TYPE speedType)
