@@ -15,7 +15,9 @@ public:
 	void Release(void);
 
 private:
-	int buttonModel_;
+	int buttonModel_[4];
+	VECTOR bottonPos_[4];
+
 	int models_[(int)TYPE::MAX];
 
 	std::vector<Block*> blocks_;
