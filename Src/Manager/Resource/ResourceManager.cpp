@@ -33,6 +33,19 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::PLAYER_MODEL_3, res);
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player4.mv1");
 	resourcesMap_.emplace(SRC::PLAYER_MODEL_4, res);
+
+	std::string buttonPath = Application::PATH_IMAGE + "UI/Button/";
+
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Red.png");
+	resourcesMap_.emplace(SRC::RED_BUTTON, res);
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Blue.png");
+	resourcesMap_.emplace(SRC::BLUE_BUTTON, res);
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Green.png");
+	resourcesMap_.emplace(SRC::GREEN_BUTTON, res);
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Yellow.png");
+	resourcesMap_.emplace(SRC::YELLOW_BUTTON, res);
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Gray.png");
+	resourcesMap_.emplace(SRC::GRAY_BUTTON, res);
 }
 
 void ResourceManager::Release(void)

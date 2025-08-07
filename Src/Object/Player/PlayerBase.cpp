@@ -1,7 +1,8 @@
 #include <DxLib.h>
 #include "../../Utility/Utility.h"
 #include "../../Manager/Input/KeyConfig.h"
-#include "../../Manager/Resorce/ResourceManager.h"
+#include "../../Manager/Resource/ResourceManager.h"
+#include "../UI/LifeUI.h"
 #include "PlayerBase.h"
 
 PlayerBase::PlayerBase(int playerNum,VECTOR pos)
@@ -12,12 +13,16 @@ PlayerBase::PlayerBase(int playerNum,VECTOR pos)
 	initPos_=pos_;
 	rot_ = { 0.0f, 0.0f, 0.0f };	//初期回転角度
 	hp_ = MAX_HP;
+	isInvincible_ = false;	//無敵状態を初期化
 	rotFlame_ = 0.0f;	//回転フレーム数
 	modelId_ = ResourceManager::GetInstance().LoadModelDuplicate(
 		playerNum == 0 ? ResourceManager::SRC::PLAYER_MODEL_1 :
 		playerNum == 1 ? ResourceManager::SRC::PLAYER_MODEL_2 :
 		playerNum == 2 ? ResourceManager::SRC::PLAYER_MODEL_3 :
 		ResourceManager::SRC::PLAYER_MODEL_4);
+
+	lifeUI_ = std::make_shared<LifeUI>(playerNum_);	//ライフUIを生成
+
 	//フェーズの状態遷移処理を登録
 	stateChanges_.emplace(STATE::LAND, std::bind(&PlayerBase::ChengeStateLand, this));
 	stateChanges_.emplace(STATE::JUMP, std::bind(&PlayerBase::ChengeStateJump, this));
@@ -49,10 +54,18 @@ void PlayerBase::Update(void)
 			wave = nullptr;	//波が終わったら削除
 		}
 	}
-	
-
-
+	if (isInvincible_)
+	{
+		invincibleTime_++;
+		if (invincibleTime_ > INVINCIBLE_TIME)	//無敵時間が経過したら
+		{
+			invincibleTime_ = 0.0f;	//無敵時間を初期化
+			isInvincible_ = false;	//無敵状態を解除
+		}
+	}
 	stateUpdate_();
+	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
+
 	//モデルの位置を更新
 	MV1SetPosition(modelId_, pos_);
 	MV1SetRotationXYZ(modelId_, rot_);
@@ -70,12 +83,16 @@ void PlayerBase::Draw(void)
 	{
 		MV1DrawModel(modelId_);
 	}
-	DrawFormatString(0, 0, 0xffffff, "%d",static_cast<int>( pos_.y));
+	//ライフUIを描画
+	lifeUI_->Draw();
 }
 
 void PlayerBase::Damage(void)
 {
+	if (isInvincible_) { return; }	//無敵状態ならダメージを受けない
+	isInvincible_ = true;	//無敵状態にする
 	hp_--;
+	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
 	ChengeState(STATE::DAMAGE);
 }
 
@@ -153,10 +170,9 @@ void PlayerBase::UpdateDrop(void)
 void PlayerBase::UpdateDamage(void)
 {
 	invincibleTime_++;
-	if (invincibleTime_ >= INVINCIBLE_TIME)	//無敵時間が経過したら
+	if (invincibleTime_ >= DAMAGE_DELAY)	//無敵時間が経過したら
 	{
 		MV1SetDifColorScale(modelId_, { 1.0f, 1.0f, 1.0f, 1.0f });//無敵時間中は白くする
-		invincibleTime_ = 0.0f;	//無敵時間を初期化
 		if (hp_ <= 0)	//HPが0以下なら死亡状態へ
 		{
 			ChengeState(STATE::DEATH);

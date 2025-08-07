@@ -5,6 +5,8 @@
 #include <map>
 #include "../Wave.h"
 
+class LifeUI;
+
 class PlayerBase
 {
 public:
@@ -24,6 +26,7 @@ public:
 	static constexpr float JUMP_ROAL = 30.0f;	//回転の硬直時間(フレーム数)
 	static constexpr float JUMP_DURABILITY = 60.0f;	//空中滞在期間(通常時)(フレーム
 
+	static constexpr float DAMAGE_DELAY = 30.0f;	//ダメージ後の硬直時間(フレーム数)//
 	static constexpr float INVINCIBLE_TIME = 60.0f;	//無敵時間(ダメージ後)(フレーム
 
 	static constexpr float JUMP_SPEED = 50.0f;	//ジャンプの上昇速度
@@ -33,7 +36,7 @@ public:
 
 	static constexpr int MAX_HP = 3;
 
-	static constexpr float RADIUS = 20.0f;	//プレイヤーの半径
+	static constexpr float RADIUS = 50.0f;	//プレイヤーの半径
 
 	PlayerBase(int playerNum , VECTOR pos);
 	virtual ~PlayerBase(void);
@@ -63,7 +66,11 @@ protected:
 	int hp_;
 	Wave::SPEED_TYPE waveSpeedType_;
 
+	std::shared_ptr<LifeUI> lifeUI_;	//ライフUI
+
 	float deceleration_;	//減速率
+
+	bool isInvincible_;	//無敵状態かどうか
 
 	std::map<STATE, std::function<void(void)>> stateChanges_;
 	std::function<void(void)> stateUpdate_;

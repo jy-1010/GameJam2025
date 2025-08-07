@@ -8,7 +8,7 @@
 #include"../Game/GameScene.h"
 
 #include "../../Manager/Camera/Camera.h"
-#include "../../Manager/Resorce/ResourceManager.h"
+#include "../../Manager/Resource/ResourceManager.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
 
