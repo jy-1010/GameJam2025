@@ -34,6 +34,7 @@ public:
 	virtual void Draw(void);
 
 	const int GetHp(void) { return hp_; }
+	bool IsLand(void) { return state_ == STATE::LAND; }
 	void Damage(void);
 protected:
 	int modelId_;

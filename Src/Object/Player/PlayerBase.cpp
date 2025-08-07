@@ -46,7 +46,11 @@ void PlayerBase::Damage(void)
 
 void PlayerBase::UpdateLand(void)
 {
-	
+	auto& keyCon = KeyConfig::GetInstance();
+	if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::JUMP, static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1)))
+	{
+		ChengeState(STATE::JUMP);
+	}
 }
 
 void PlayerBase::UpdateJump(void)
