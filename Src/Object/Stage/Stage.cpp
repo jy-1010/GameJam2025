@@ -5,8 +5,10 @@
 #include<fstream>
 
 #include"../../Utility/Utility.h"
+#include"../../Application.h"
 
 Stage::Stage():
+	haikei_(-1),
 	botton_(),
 	buttonModel_(),
 	bottonPos_(),
@@ -22,6 +24,8 @@ Stage::~Stage()
 
 void Stage::Load(void)
 {
+	haikei_ = Utility::LoadImg("Data/Image/Background.png");
+
 	botton_ = MV1LoadModel("Data/Model/Stage/Button.mv1");
 
 	models_[(int)TYPE::WOODEN] = MV1LoadModel("Data/Model/Stage/Wooden_Box.mv1");
@@ -31,6 +35,7 @@ void Stage::Load(void)
 
 void Stage::Draw(void)
 {
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2, 2, 0, haikei_, true);
 	for (auto& block : blocks_) { block->Draw(); }
 	for (auto& botton : buttonModel_) { MV1DrawModel(botton); }
 }
@@ -51,6 +56,7 @@ void Stage::Release(void)
 	for (auto& botton : buttonModel_) { MV1DeleteModel(botton); }
 	buttonModel_.clear();
 	MV1DeleteModel(botton_);
+	DeleteGraph(haikei_);
 }
 
 

@@ -26,6 +26,7 @@ public:
 	}
 
 private:
+	int haikei_;
 	int botton_;
 	std::vector<int> buttonModel_;
 	std::vector<VECTOR> bottonPos_;
