@@ -2,16 +2,11 @@
 
 #include<vector>
 
+#include"Block.h"
+
 class Stage
 {
 public:
-	enum class BLOCK {
-		NON=-1,
-
-
-		MAX
-	};
-
 	Stage();
 	~Stage();
 
@@ -20,7 +15,11 @@ public:
 	void Release(void);
 
 private:
-	std::vector<int>blocks_;
-	std::vector<std::vector<int>>mapData_;
-};
+	int buttonModel_[4];
+	VECTOR bottonPos_[4];
 
+	int models_[(int)TYPE::MAX];
+
+	std::vector<Block*> blocks_;
+	void LoadMapData(void);
+};

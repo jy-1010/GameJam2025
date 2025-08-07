@@ -4,6 +4,8 @@
 #include<cmath>
 
 #include"../../Application.h"
+#include"../SceneManager/SceneManager.h"
+#include"../../Manager/Camera/Camera.h"
 
 int GameScene::hitStop_ = 0;
 
@@ -60,7 +62,8 @@ void GameScene::Draw(void)
 {
 	SetDrawScreen(mainScreen_);
 	ClearDrawScreen();
-
+	auto camera = SceneManager::GetInstance().GetCamera();
+	camera.lock()->SetBeforeDraw();
 
 	//•`‰æˆ—-----------------------------------------
 	using app = Application;

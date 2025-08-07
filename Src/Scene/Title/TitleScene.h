@@ -1,5 +1,7 @@
 #pragma once
 #include"../SceneBase.h"
+#include <memory>;
+class Wave;
 
 class TitleScene : public SceneBase
 {

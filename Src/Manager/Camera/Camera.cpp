@@ -18,6 +18,18 @@ Camera::Camera(int _playerNum)
 	localPos_ = Utility::VECTOR_ZERO;
 }
 
+Camera::Camera()
+{
+	angles_ = VECTOR();
+	cameraUp_ = VECTOR();
+	mode_ = MODE::NONE;
+	pos_ = Utility::VECTOR_ZERO;
+	targetPos_ = Utility::VECTOR_ZERO;
+	followTransform_ = nullptr;
+	padNo_ = static_cast<KeyConfig::JOYPAD_NO>(1);
+	localPos_ = Utility::VECTOR_ZERO;
+}
+
 Camera::~Camera(void)
 {
 }
