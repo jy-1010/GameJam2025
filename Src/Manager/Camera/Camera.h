@@ -161,7 +161,7 @@ private:
 	//void SetBeforeDrawFollowRotation(void);
 	//void SetBeforeDrawSelfShot(void);
 	//void SetBeforeDrawFPS(void);
-	void SetBeforeDrawFreeControll(void);
+	//void SetBeforeDrawFreeControll(void);
 	void SetBeforeDrawFixedUp(void);
 	void SetBeforeDrawFixedDiagonal(void);
 };

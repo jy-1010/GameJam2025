@@ -39,6 +39,8 @@ void SceneManager::Init(void)
 	camera_->SetPos({ 0.0f,10000.0f,50.0f });
 	camera_->SetTargetPos({ 0.0f,0.0f,0.0f });
 
+	KeyConfig::CreateInstance();
+
 	// 最初はタイトル画面から
 	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
 }
@@ -54,6 +56,7 @@ void SceneManager::Update(void)
 	auto nowTime = std::chrono::system_clock::now();
 	deltaTime_ = static_cast<float>(
 		std::chrono::duration_cast<std::chrono::nanoseconds>(nowTime - preTime_).count() / 1000000000.0);
+	KeyConfig::GetInstance().Update();
 
 	// ロード中
 	if (Loading::GetInstance()->IsLoading())

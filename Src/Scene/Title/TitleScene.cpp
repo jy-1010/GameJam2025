@@ -1,5 +1,5 @@
 #include"TitleScene.h"
-#include "../../Object/Wave.h"
+
 #include<DxLib.h>
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
