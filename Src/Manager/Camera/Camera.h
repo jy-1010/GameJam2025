@@ -73,6 +73,7 @@ public:
 
 
 	Camera(int _playerNum);
+	Camera();
 	~Camera(void);
 
 	void Init(void);
