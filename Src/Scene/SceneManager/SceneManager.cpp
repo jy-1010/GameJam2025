@@ -6,6 +6,7 @@
 
 #include"../Title/TitleScene.h"
 #include"../Game/GameScene.h"
+#include"../Game/Start.h"
 
 #include "../../Manager/Camera/Camera.h"
 
@@ -56,6 +57,8 @@ void SceneManager::Update(void)
 	auto nowTime = std::chrono::system_clock::now();
 	deltaTime_ = static_cast<float>(
 		std::chrono::duration_cast<std::chrono::nanoseconds>(nowTime - preTime_).count() / 1000000000.0);
+	preTime_ = nowTime;
+
 	KeyConfig::GetInstance().Update();
 
 	// ロード中
@@ -157,6 +160,10 @@ void SceneManager::PushScene(std::shared_ptr<SceneBase> scene)
 {
 	//新しく積むのでもともと入っている奴はまだ削除されない
 	scenes_.push_back(scene);
+
+	Loading::GetInstance()->StartAsyncLoad();
+	scenes_.back()->Load();
+	Loading::GetInstance()->EndAsyncLoad();
 }
 
 void SceneManager::PushScene(SCENE_ID scene)
@@ -179,6 +186,7 @@ void SceneManager::PopScene(void)
 	//積んであるものを消して、もともとあったものを末尾にする
 	if (scenes_.size() > 1) 
 	{
+		scenes_.back()->Release();
 		scenes_.pop_back();
 	}
 }
@@ -209,7 +217,8 @@ void SceneManager::JumpScene(SCENE_ID scene)
 
 float SceneManager::GetDeltaTime(void) const
 {
-	return deltaTime_;
+	return 1.0f / 60;
+	//return deltaTime_;
 }
 
 void SceneManager::ResetDeltaTime(void)

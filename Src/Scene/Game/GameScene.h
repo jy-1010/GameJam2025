@@ -9,6 +9,8 @@ class Stage;
 class GameScene : public SceneBase
 {
 public:
+	static constexpr int LIMIT_TIME = 60;
+
 	GameScene();
 	~GameScene()override;
 
@@ -45,6 +47,9 @@ public:
 
 private:
 	std::shared_ptr<Stage>stage_;
+
+	int timeImg_;
+	float limitTime_;
 
 	// ヒットストップカウンター
 	static int hitStop_;
