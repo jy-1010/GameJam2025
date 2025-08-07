@@ -4,6 +4,15 @@
 class TitleScene : public SceneBase
 {
 public:
+
+	enum class MODE	//タイトル遷移選択
+	{
+		PLAY,			//ゲームへ
+		EXIT,			//終わる
+		OPERATION,		//操作説明
+	};	
+
+
 	TitleScene();
 	~TitleScene()override;
 
@@ -19,5 +28,14 @@ public:
 	void Release(void)override;
 
 private:
+
+	//タイトル画像ハンドル
+	int title_Img;
+	
+	// シーンID
+	MODE modeId_;
+
+
+	bool isRightKeyAlive ;
 
 };

@@ -44,6 +44,12 @@ public:
 	InputManager(const InputManager& manager) = default;
 	~InputManager(void);
 
+	// インスタンスを明示的に生成
+	static void CreateInstance(void);
+
+	// インスタンスの取得
+	static InputManager& GetInstance(void);
+
 	void Init(void);
 	void Update(void);
 	void Release(void);
@@ -128,6 +134,9 @@ private:
 
 	// コントローラ情報(XBOX)
 	XINPUT_STATE joyXInState_;
+
+	// シングルトン用インスタンス
+	static InputManager* instance_;
 
 	// キー情報
 	std::map<int, InputManager::Info> keyInfos_;
