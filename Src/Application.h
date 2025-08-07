@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 // クラスの前方宣言
 class FPS;
 
@@ -10,13 +10,18 @@ public:
 	static constexpr int SCREEN_SIZE_X = 1500;	// スクリーン横幅;
 	static constexpr int SCREEN_SIZE_Y = 960;	// スクリーン縦幅;
 
-public:
+	// データパス関連
+//-------------------------------------------
+	static const std::string PATH_IMAGE;
+	static const std::string PATH_MODEL;
+	//static const std::string PATH_EFFECT;
+	static const std::string PATH_SOUND_BGM;
+	static const std::string PATH_SOUND_SE;
+
 	// シングルトン（生成・取得・削除）
 	static void CreateInstance(void) { if (instance_ == nullptr) { instance_ = new Application(); instance_->Init(); } }
 	static Application& GetInstance(void) { return *instance_; }
 	static void DeleteInstance(void) { if (instance_ != nullptr) delete instance_; instance_ = nullptr; }
-
-public:
 
 	void Init(void);	// 初期化
 	void Run(void);		// ゲームループの開始
@@ -35,8 +40,6 @@ private:
 
 	// デストラクタも同様
 	~Application(void);
-
-private:
 
 	// 静的インスタンス
 	static Application* instance_;

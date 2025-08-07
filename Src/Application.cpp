@@ -7,6 +7,12 @@
 
 Application* Application::instance_ = nullptr;
 
+const std::string Application::PATH_IMAGE = "Data/Image/";
+const std::string Application::PATH_MODEL = "Data/Model/";
+//const std::string Application::PATH_EFFECT = "Data/Effect/";
+const std::string Application::PATH_SOUND_BGM = "Data/Sound/BGM/";
+const std::string Application::PATH_SOUND_SE = "Data/Sound/SE/";
+
 // コンストラクタ
 Application::Application(void)
 {
