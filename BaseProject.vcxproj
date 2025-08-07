@@ -22,6 +22,7 @@
     <ClCompile Include="Src\Application.cpp" />
     <ClCompile Include="Src\Common\Vector2.cpp" />
     <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\Manager\AnimationController\AnimationController.cpp" />
     <ClCompile Include="Src\Manager\FPS\FPS.cpp" />
     <ClCompile Include="Src\Manager\Loading\Loading.cpp" />
     <ClCompile Include="Src\Scene\Game\GameScene.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="Src\Application.h" />
     <ClInclude Include="Src\Common\Vector2.h" />
     <ClInclude Include="Src\main.h" />
+    <ClInclude Include="Src\Manager\AnimationController\AnimationController.h" />
     <ClInclude Include="Src\Manager\FPS\FPS.h" />
     <ClInclude Include="Src\Manager\Loading\Loading.h" />
     <ClInclude Include="Src\Scene\Game\GameScene.h" />

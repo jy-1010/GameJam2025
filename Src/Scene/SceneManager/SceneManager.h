@@ -3,6 +3,8 @@
 #include<memory>
 #include<list>
 
+#include <chrono>
+
 class SceneBase;
 
 class SceneManager
@@ -70,6 +72,10 @@ public:
 	// ゲーム終了
 	void GameEnd(void) { isGameEnd_ = true; }
 
+	// デルタタイムの取得
+	float GetDeltaTime(void) const;
+	void ResetDeltaTime(void);
+
 	// ゲーム終了取得
 	bool GetGameEnd(void) { return isGameEnd_; }
 
@@ -80,6 +86,10 @@ private:
 	//Drawの関係上Backを最新のシーンとする
 	//基本的には要素は一つだけだがポーズシーンなどが積み重なる形
 	std::list<std::shared_ptr<SceneBase>>scenes_;
+
+	// デルタタイム
+	std::chrono::system_clock::time_point preTime_;
+	float deltaTime_;
 
 	// シーンID
 	SCENE_ID sceneId_;
