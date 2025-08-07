@@ -24,7 +24,7 @@ int WINAPI WinMain(
 	instance.Run();
 
 	// ‰ð•ú
-	instance.Destroy();
+	instance.Release();
 
 	return 0;
 

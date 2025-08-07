@@ -1,107 +1,96 @@
-#include <DxLib.h>
-#include <EffekseerForDXLib.h>
 #include "Application.h"
+
+#include <DxLib.h>
+
+#include"Manager/FPS/FPS.h"
+#include"Scene/SceneManager/SceneManager.h"
 
 Application* Application::instance_ = nullptr;
 
-const std::string Application::PATH_IMAGE = "Data/Image/";
-const std::string Application::PATH_MODEL = "Data/Model/";
-const std::string Application::PATH_EFFECT = "Data/Effect/";
-
-void Application::CreateInstance(void)
+// コンストラクタ
+Application::Application(void)
 {
-	if (instance_ == nullptr)
-	{
-		instance_ = new Application();
-	}
-	instance_->Init();
+	isInitFail_ = false;
+	isReleaseFail_ = false;
+	fps_ = nullptr;
 }
 
-Application& Application::GetInstance(void)
+// デストラクタ
+Application::~Application(void)
 {
-	return *instance_;
 }
 
+// 初期化
 void Application::Init(void)
 {
-
 	// アプリケーションの初期設定
-	SetWindowText("ContestBaseProject");
+	SetWindowText("ベース");
 
-	// ウィンドウサイズ
-	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 32);
-	ChangeWindowMode(true);
+	// ウィンドウ関連
+	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 32);	// サイズ変更
+	ChangeWindowMode(true);	// false = フルスクリーン
 
 	// DxLibの初期化
-	SetUseDirect3DVersion(DX_DIRECT3D_11);
 	isInitFail_ = false;
 	if (DxLib_Init() == -1)
 	{
+		// 初期化失敗
 		isInitFail_ = true;
 		return;
 	}
 
-	// Effekseerの初期化
-	InitEffekseer();
+	// 描画先画面を裏にする
+	SetDrawScreen(DX_SCREEN_BACK);
 
 	// キー制御初期化
 	SetUseDirectInputFlag(true);
 
+
+
+	// シーン管理初期化
+	SceneManager::CreateInstance();
+	SceneManager::GetInstance().Init();
+
+	// FPS初期化
+	fps_ = new FPS;
+	fps_->Init();
 }
 
+// ゲームループ
 void Application::Run(void)
 {
-
 	// ゲームループ
-	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	while (ProcessMessage() == 0)
 	{
+		// フレームレート更新
+		// 1/60秒経過していないなら再ループさせる
+		if (!fps_->UpdateFrameRate()) continue;
+
+		SceneManager::GetInstance().Update();	// シーン管理更新
+		fps_->CalcFrameRate();					// フレームレート計算
+
+		ClearDrawScreen();
+
+		SceneManager::GetInstance().Draw();		// シーン管理描画
+		fps_->DrawFrameRate();					// フレームレート描画
 
 		ScreenFlip();
-
 	}
-
 }
 
-void Application::Destroy(void)
+// 解放
+void Application::Release(void)
 {
+	// シーン管理解放・削除	
+	SceneManager::GetInstance().Release();
+	SceneManager::DeleteInstance();
 
-	// Effekseerを終了する。
-	Effkseer_End();
+	// フレームレート解放
+	delete fps_;
 
 	// DxLib終了
 	if (DxLib_End() == -1)
 	{
 		isReleaseFail_ = true;
 	}
-
-	delete instance_;
-
-}
-
-bool Application::IsInitFail(void) const
-{
-	return isInitFail_;
-}
-
-bool Application::IsReleaseFail(void) const
-{
-	return isReleaseFail_;
-}
-
-Application::Application(void)
-{
-	isInitFail_ = false;
-	isReleaseFail_ = false;
-}
-
-void Application::InitEffekseer(void)
-{
-	if (Effekseer_Init(8000) == -1)
-	{
-		DxLib_End();
-	}
-
-	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
-
-	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 }
