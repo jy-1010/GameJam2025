@@ -266,9 +266,34 @@ double Utility::Magnitude(const Vector2& v)
     return sqrt((v.x * v.x) + (v.y * v.y));
 }
 
+double Utility::Magnitude(const VECTOR& v)
+{
+    return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
+}
+
+float Utility::MagnitudeF(const VECTOR& v)
+{
+    return sqrtf((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
+}
+
 int Utility::SqrMagnitude(const Vector2& v)
 {
-    return static_cast<int>(v.x * v.x + v.y * v.y);
+    return v.x * v.x + v.y * v.y;
+}
+
+float Utility::SqrMagnitudeF(const VECTOR& v)
+{
+    return v.x * v.x + v.y * v.y + v.z * v.z;
+}
+
+double Utility::SqrMagnitude(const VECTOR& v)
+{
+    return v.x * v.x + v.y * v.y + v.z * v.z;
+}
+
+double Utility::SqrMagnitude(const VECTOR& v1, const VECTOR& v2)
+{
+    return pow(v2.x - v1.x, 2) + pow(v2.y - v1.y, 2) + pow(v2.z - v1.z, 2);
 }
 
 double Utility::Distance(const Vector2& v1, const Vector2& v2)
@@ -276,6 +301,10 @@ double Utility::Distance(const Vector2& v1, const Vector2& v2)
     return sqrt(pow(v2.x - v1.x, 2) + pow(v2.y - v1.y, 2));
 }
 
+double Utility::Distance(const VECTOR& v1, const VECTOR& v2)
+{
+    return sqrt(pow(v2.x - v1.x, 2) + pow(v2.y - v1.y, 2) + pow(v2.z - v1.z, 2));
+}
 void Utility::LoadImg(int& handle, std::string path)
 {
     handle = LoadGraph(path.c_str());
@@ -317,5 +346,75 @@ void Utility::LoadArrayImg(std::string path, int AllNum, int XNum, int YNum, int
         printfDx("âÊëúì«Ç›çûÇ›Ç…é∏îsÇµÇ‹ÇµÇΩ: %s\n", path.c_str());
         return;
     }
+}
+
+VECTOR Utility::Normalize(const Vector2& v)
+{
+    VECTOR ret = VGet(
+        static_cast<float>(v.x),
+        static_cast<float>(v.y),
+        0.0f
+    );
+    float len = static_cast<float>(Magnitude(v));
+    ret.x /= len;
+    ret.y /= len;
+    ret.z /= len;
+    return ret;
+}
+
+VECTOR Utility::VNormalize(const VECTOR& v)
+{
+    if (Utility::EqualsVZero(v))
+    {
+        // QuaternionåvéZÇ≈É[ÉçÇìnÇµÇƒÅA
+        // ÉGÉâÅ[(-1, -1, -1)Ç™ï‘Ç¡ÇƒÇ≠ÇÈÇ∆ç¢ÇÈ
+        return v;
+    }
+    return VNorm(v);
+}
+
+bool Utility::Equals(const VECTOR& v1, const VECTOR& v2)
+{
+    if (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Utility::EqualsVZero(const VECTOR& v1)
+{
+    const VECTOR& v2 = VECTOR_ZERO;
+    if (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z)
+    {
+        return true;
+    }
+    return false;
+}
+
+double Utility::AngleDeg(const VECTOR& from, const VECTOR& to)
+{
+    // sqrt(a) * sqrt(b) = sqrt(a * b) -- valid for real numbers
+    auto fLen = SqrMagnitude(from);
+    auto tLen = SqrMagnitude(to);
+    auto denominator = sqrt(fLen * tLen);
+    if (denominator < kEpsilonNormalSqrt)
+    {
+        return 0.0f;
+    }
+
+    //float dot = std::clamp(Dot(from, to) / denominator, -1.0f, 1.0f);
+    //auto dot = Dot(from, to) / denominator;
+    auto dot = VDot(from, to) / denominator;
+    if (dot < -1.0f)
+    {
+        dot = -1.0f;
+    }
+    if (dot > 1.0f)
+    {
+        dot = 1.0f;
+    }
+
+    return acos(dot) * (180.0 / DX_PI);
 }
 

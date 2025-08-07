@@ -20,10 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Application.cpp" />
+    <ClCompile Include="Src\Common\Quaternion.cpp" />
     <ClCompile Include="Src\Common\Vector2.cpp" />
     <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\Manager\Camera\Camera.cpp" />
     <ClCompile Include="Src\Manager\FPS\FPS.cpp" />
+    <ClCompile Include="Src\Manager\Input\InputManager.cpp" />
+    <ClCompile Include="Src\Manager\Input\KeyConfig.cpp" />
     <ClCompile Include="Src\Manager\Loading\Loading.cpp" />
+    <ClCompile Include="Src\Object\Common\Transform.cpp" />
     <ClCompile Include="Src\Scene\Game\GameScene.cpp" />
     <ClCompile Include="Src\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Src\Scene\Title\TitleScene.cpp" />
@@ -31,10 +36,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Application.h" />
+    <ClInclude Include="Src\Common\Quaternion.h" />
     <ClInclude Include="Src\Common\Vector2.h" />
     <ClInclude Include="Src\main.h" />
+    <ClInclude Include="Src\Manager\Camera\Camera.h" />
     <ClInclude Include="Src\Manager\FPS\FPS.h" />
+    <ClInclude Include="Src\Manager\Input\InputManager.h" />
+    <ClInclude Include="Src\Manager\Input\KeyConfig.h" />
     <ClInclude Include="Src\Manager\Loading\Loading.h" />
+    <ClInclude Include="Src\Object\Common\Transform.h" />
     <ClInclude Include="Src\Scene\Game\GameScene.h" />
     <ClInclude Include="Src\Scene\SceneBase.h" />
     <ClInclude Include="Src\Scene\SceneManager\SceneManager.h" />

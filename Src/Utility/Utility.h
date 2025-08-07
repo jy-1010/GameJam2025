@@ -15,10 +15,6 @@ public:
 		RIGHT,		//右揃え
 	};
 
-	// ラジアン(rad)・度(deg)変換用
-	static constexpr float RAD2DEG = (180.0f / DX_PI_F);
-	static constexpr float DEG2RAD = (DX_PI_F / 180.0f);
-
 	static constexpr VECTOR VECTOR_ZERO = { 0.0f, 0.0f, 0.0f };
 	static constexpr VECTOR VECTOR_ONE = { 1.0f, 1.0f, 1.0f };
 
@@ -102,8 +98,14 @@ public:
 
 	// ベクトルの長さ
 	static double Magnitude(const Vector2& v);
+	static double Magnitude(const VECTOR& v);
+	static float MagnitudeF(const VECTOR& v);
 	static int SqrMagnitude(const Vector2& v);
+	static float SqrMagnitudeF(const VECTOR& v);
+	static double SqrMagnitude(const VECTOR& v);
+	static double SqrMagnitude(const VECTOR& v1, const VECTOR& v2);
 	static double Distance(const Vector2& v1, const Vector2& v2);
+	static double Distance(const VECTOR& v1, const VECTOR& v2);
 
 	// 画像読み込み（エラーチェック付き）
 	static void LoadImg(int& handle, std::string path);
@@ -112,5 +114,17 @@ public:
 	// スプライト画像読み込み（エラーチェック付き）
 	static void LoadArrayImg(std::string path, int AllNum, int XNum, int YNum, int XSize, int YSize, int* handleArray);
 	static void LoadArrayImg(std::string path, int AllNum, int XNum, int YNum, int XSize, int YSize, std::vector<int>& handleArray);
+
+	// 正規化
+	static VECTOR Normalize(const Vector2& v);
+	static VECTOR VNormalize(const VECTOR& v);
+
+	// 比較
+	static bool Equals(const VECTOR& v1, const VECTOR& v2);
+	static bool EqualsVZero(const VECTOR& v1);
+
+
+	// 2つのベクトルの間の角度
+	static double AngleDeg(const VECTOR& from, const VECTOR& to);
 };
 
