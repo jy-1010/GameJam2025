@@ -3,6 +3,7 @@
 #include<DxLib.h>
 
 #include"../SceneManager/SceneManager.h"
+#include"../../Manager/Input/KeyConfig.h"
 
 
 TitleScene::TitleScene()
@@ -22,13 +23,13 @@ void TitleScene::Init(void)
 }
 void TitleScene::Update(void)
 {
-	if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
-		SceneManager::GetInstance().ChangeScene(SCENE_ID::GAME);
-	}
 	wave_->Update();
 	if (CheckHitKey(KEY_INPUT_R))
 	{
 		wave_->Reset();
+	}
+	if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::CHENGE_SCENE, KeyConfig::JOYPAD_NO::PAD1)) {
+		SceneManager::GetInstance().ChangeScene(SCENE_ID::GAME);
 	}
 }
 void TitleScene::Draw(void)
