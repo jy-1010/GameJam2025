@@ -6,7 +6,7 @@
 Wave::Wave(VECTOR centerPos, SPEED_TYPE speedType, int color)
 {
 	centerPos_ = centerPos;
-	speed_ = static_cast<float>(speedType);
+	speed_ = InitSpeed(speedType);
 	color_ = color;
 	time_ = 0.0f;
 }
@@ -42,4 +42,19 @@ void Wave::Draw(void)
 void Wave::Reset(void)
 {
 	time_ = 0.0f;
+}
+
+float Wave::InitSpeed(SPEED_TYPE speedType) const
+{
+	switch (speedType)
+	{
+	case SPEED_TYPE::SLOW:
+		return SLOW_SPEED;
+	case SPEED_TYPE::MIDIUM:
+		return MIDIUM_SPEED;
+	case SPEED_TYPE::FAST:
+		return FAST_SPEED;
+	default:
+		return 0.0f;
+	}
 }

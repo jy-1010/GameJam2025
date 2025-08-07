@@ -11,6 +11,16 @@ public:
 	// リソース名
 	enum class SRC
 	{
+		PLAYER_MODEL_1,
+		PLAYER_MODEL_2,
+		PLAYER_MODEL_3,
+		PLAYER_MODEL_4,
+
+		RED_BUTTON,
+		BLUE_BUTTON,
+		YELLOW_BUTTON,
+		GREEN_BUTTON,
+		GRAY_BUTTON,
 	};
 
 	// 明示的にインステンスを生成する

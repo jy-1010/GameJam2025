@@ -8,6 +8,7 @@
 #include"../Game/GameScene.h"
 
 #include "../../Manager/Camera/Camera.h"
+#include "../../Manager/Resource/ResourceManager.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
 
@@ -41,6 +42,8 @@ void SceneManager::Init(void)
 	camera_->SetTargetPos({ 0.0f,0.0f,0.0f });
 
 	KeyConfig::CreateInstance();
+
+	ResourceManager::CreateInstance();
 
 	// Å‰‚Íƒ^ƒCƒgƒ‹‰æ–Ê‚©‚ç
 	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
