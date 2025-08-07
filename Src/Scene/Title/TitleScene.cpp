@@ -3,6 +3,7 @@
 #include<DxLib.h>
 
 #include"../SceneManager/SceneManager.h"
+#include"../../Manager/Camera/Camera.h"
 
 
 TitleScene::TitleScene()
@@ -15,6 +16,10 @@ TitleScene::~TitleScene()
 
 void TitleScene::Load(void)
 {
+	stage_ = std::make_shared<Stage>();
+	stage_->Load();
+	SceneManager::GetInstance().GetCamera().lock()->SetPos(Stage::C_POS);
+	SceneManager::GetInstance().GetCamera().lock()->SetTargetPos(stage_->GetCenter());
 }
 void TitleScene::Init(void)
 {
@@ -33,9 +38,12 @@ void TitleScene::Update(void)
 }
 void TitleScene::Draw(void)
 {
+	stage_->Draw();
+
 	wave_->Draw();
 	DrawString(0, 0, "タイトルシーン", 0xffffff);
 }
 void TitleScene::Release(void)
 {
+	stage_->Release();
 }

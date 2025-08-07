@@ -7,9 +7,12 @@
 #include"../../Utility/Utility.h"
 
 Stage::Stage():
+	botton_(),
 	buttonModel_(),
+	bottonPos_(),
 	models_(),
-	blocks_()
+	blocks_(),
+	blockNum_()
 {
 }
 
@@ -19,16 +22,11 @@ Stage::~Stage()
 
 void Stage::Load(void)
 {
-	int b = MV1LoadModel("Data/Model/Stage/Button.mv1");
-	for (auto& botton : buttonModel_) { botton = MV1DuplicateModel(b); }
+	botton_ = MV1LoadModel("Data/Model/Stage/Button.mv1");
 
 	models_[(int)TYPE::WOODEN] = MV1LoadModel("Data/Model/Stage/Wooden_Box.mv1");
 
 	LoadMapData();
-
-	for (int i = 0; i < 4; i++) {
-		MV1SetPosition(buttonModel_[i], bottonPos_[i]);
-	}
 }
 
 void Stage::Draw(void)
@@ -49,8 +47,13 @@ void Stage::Release(void)
 
 	for (auto& model : models_) { MV1DeleteModel(model); }
 
+	bottonPos_.clear();
 	for (auto& botton : buttonModel_) { MV1DeleteModel(botton); }
+	buttonModel_.clear();
+	MV1DeleteModel(botton_);
 }
+
+
 
 void Stage::LoadMapData(void)
 {
@@ -60,8 +63,6 @@ void Stage::LoadMapData(void)
 	std::string line; // 1行の文字情報
 	std::vector<std::string> strSplit; // 1行を1文字の動的配列に分割
 	int z = 0;
-
-	int bottonCou = 0;
 
 	while (getline(ifs, line))
 	{
@@ -74,12 +75,13 @@ void Stage::LoadMapData(void)
 				block->Create((Block::TYPE)0, models_[0], x, z);
 				blocks_.emplace_back(block);
 
-				bottonPos_[bottonCou] = {
+				buttonModel_.emplace_back(MV1DuplicateModel(botton_));
+				bottonPos_.emplace_back(VGet(
 					x * Block::SIZE_BLOCK + (Block::SIZE_BLOCK / 2),
 					0.0f,
 					z * Block::SIZE_BLOCK + (Block::SIZE_BLOCK / 2)
-				};
-				bottonCou++;
+				));
+				MV1SetPosition(buttonModel_[buttonModel_.size() - 1], bottonPos_[bottonPos_.size() - 1]);
 			}
 			else {
 				Block* block = new Block();
@@ -90,4 +92,6 @@ void Stage::LoadMapData(void)
 
 		z++;
 	}
+	blockNum_.x = strSplit.size();
+	blockNum_.z = z;
 }

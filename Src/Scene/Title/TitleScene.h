@@ -1,6 +1,7 @@
 #pragma once
 #include"../SceneBase.h"
 #include <memory>;
+#include"../../Object/Stage/Stage.h"
 class Wave;
 
 class TitleScene : public SceneBase
@@ -22,4 +23,5 @@ public:
 
 private:
 	std::shared_ptr<Wave> wave_;
+	std::shared_ptr<Stage>stage_;
 };
