@@ -63,7 +63,6 @@ void GameScene::Update(void)
 	}
 
 
-
 }
 void GameScene::Draw(void)
 {
