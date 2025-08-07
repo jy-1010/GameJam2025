@@ -1,5 +1,7 @@
 #pragma once
 #include"../SceneBase.h"
+#include <memory>;
+class Wave;
 
 class TitleScene : public SceneBase
 {
@@ -19,5 +21,5 @@ public:
 	void Release(void)override;
 
 private:
-
+	std::shared_ptr<Wave> wave_;
 };
