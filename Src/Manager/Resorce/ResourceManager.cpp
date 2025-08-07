@@ -1,4 +1,5 @@
 #include <DxLib.h>
+#include <memory>
 #include "../../Application.h"
 #include "Resource.h"
 #include "ResourceManager.h"
@@ -24,6 +25,14 @@ void ResourceManager::Init(void)
 
 	Resource res;
 
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player1.mv1");
+	resourcesMap_.emplace(SRC::PLAYER_MODEL_1, res);
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player2.mv1");
+	resourcesMap_.emplace(SRC::PLAYER_MODEL_2, res);
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player3.mv1");
+	resourcesMap_.emplace(SRC::PLAYER_MODEL_3, res);
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player4.mv1");
+	resourcesMap_.emplace(SRC::PLAYER_MODEL_4, res);
 }
 
 void ResourceManager::Release(void)

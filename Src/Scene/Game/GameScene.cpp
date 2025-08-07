@@ -8,6 +8,10 @@
 #include"../../Manager/Camera/Camera.h"
 
 #include"../../Object/Stage/Stage.h"
+//#include"../../Object/Player/PlayerBase.h"
+#include"../../Object/Player/CPU.h"
+
+#include "../../Utility/Utility.h"
 
 int GameScene::hitStop_ = 0;
 
@@ -34,6 +38,21 @@ void GameScene::Load(void)
 
 	stage_ = std::make_shared<Stage>();
 	stage_->Load();
+
+	auto playerPoss = stage_->GetPos();
+
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		if (i == 0)
+		{
+			players_[i] = std::make_shared<PlayerBase>(i, playerPoss[i]);
+		}
+		else
+		{
+			players_[i] = std::make_shared<CPU>(i, playerPoss[i]);
+		}
+	}
+
 	SceneManager::GetInstance().GetCamera().lock()->SetPos(Stage::C_POS);
 	SceneManager::GetInstance().GetCamera().lock()->SetTargetPos(stage_->GetCenter());
 }
@@ -61,7 +80,14 @@ void GameScene::Update(void)
 		slow_--;
 		if (slow_ % slowInter_ != 0) { return; }
 	}
-
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		if (players_[i])
+		{
+			players_[i]->Update();
+		}
+	}
+	ColisionWave();
 
 }
 void GameScene::Draw(void)
@@ -78,6 +104,10 @@ void GameScene::Draw(void)
 
 	stage_->Draw();
 
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		players_[i]->Draw();
+	}
 
 	DrawString(0, 0, "ゲームシーン", 0xffffff);
 	//-------------------------------------------------
@@ -98,6 +128,39 @@ void GameScene::Shake(ShakeKinds kinds, ShakeSize size, int time)
 	if ((abs(shake_ - time) > 10) || shake_ <= 0)shake_ = time;
 	shakeKinds_ = kinds;
 	shakeSize_ = size;
+}
+
+void GameScene::ColisionWave(void)
+{
+	for (int i = 0; i < PLAYER_MAX;i++)	//ダメージを受ける側
+	{
+		auto& player1 = players_[i];
+		if (player1->IsDeath() || !player1->IsLand())
+		{	//死亡しているか、着地していないならスキップ
+			continue;
+		}
+
+		for (int j = 0; j < PLAYER_MAX;j++)	//ダメージを与える側
+		{
+			if (i == j) { continue; }	//自分自身とは当たり判定しない
+			auto& player2 = players_[j];
+			float distance = Utility::Distance(player1->GetInitPos(), player2->GetInitPos());
+			bool isHit = false;
+			for (auto& waveRadius : player2->GetWaveRadius())
+			{
+				if (abs(distance - waveRadius) < PlayerBase::RADIUS)
+				{
+					player1->Damage();	//ダメージを受ける
+					isHit = true;
+					break;
+				}
+			}
+			if (isHit)
+			{
+				break;
+			}
+		}
+	}
 }
 
 Vector2I GameScene::ShakePoint(void)

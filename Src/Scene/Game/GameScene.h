@@ -5,10 +5,14 @@
 #include"../../Common/Vector2.h"
 
 class Stage;
+class PlayerBase;
 
 class GameScene : public SceneBase
 {
 public:
+
+	static constexpr int PLAYER_MAX = 4;	// プレイヤーの最大数
+
 	GameScene();
 	~GameScene()override;
 
@@ -45,6 +49,11 @@ public:
 
 private:
 	std::shared_ptr<Stage>stage_;
+
+	//プレイヤー
+	std::shared_ptr<PlayerBase> players_[PLAYER_MAX];
+
+	void ColisionWave(void);	// 当たり判定チェック
 
 	// ヒットストップカウンター
 	static int hitStop_;

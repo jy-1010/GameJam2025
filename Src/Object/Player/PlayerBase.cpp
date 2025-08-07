@@ -1,6 +1,7 @@
 #include <DxLib.h>
 #include "../../Utility/Utility.h"
 #include "../../Manager/Input/KeyConfig.h"
+#include "../../Manager/Resorce/ResourceManager.h"
 #include "PlayerBase.h"
 
 PlayerBase::PlayerBase(int playerNum,VECTOR pos)
@@ -9,8 +10,14 @@ PlayerBase::PlayerBase(int playerNum,VECTOR pos)
 	color_ = playerNum == 0 ? Utility::RED : playerNum == 1 ? Utility::BLUE : playerNum == 2 ? Utility::YELLOW : Utility::GREEN;
 	pos_ = pos;
 	initPos_=pos_;
+	rot_ = { 0.0f, 0.0f, 0.0f };	//初期回転角度
 	hp_ = MAX_HP;
-
+	rotFlame_ = 0.0f;	//回転フレーム数
+	modelId_ = ResourceManager::GetInstance().LoadModelDuplicate(
+		playerNum == 0 ? ResourceManager::SRC::PLAYER_MODEL_1 :
+		playerNum == 1 ? ResourceManager::SRC::PLAYER_MODEL_2 :
+		playerNum == 2 ? ResourceManager::SRC::PLAYER_MODEL_3 :
+		ResourceManager::SRC::PLAYER_MODEL_4);
 	//フェーズの状態遷移処理を登録
 	stateChanges_.emplace(STATE::LAND, std::bind(&PlayerBase::ChengeStateLand, this));
 	stateChanges_.emplace(STATE::JUMP, std::bind(&PlayerBase::ChengeStateJump, this));
@@ -18,7 +25,7 @@ PlayerBase::PlayerBase(int playerNum,VECTOR pos)
 	stateChanges_.emplace(STATE::DROP, std::bind(&PlayerBase::ChengeStateDrop, this));
 	stateChanges_.emplace(STATE::DAMAGE, std::bind(&PlayerBase::ChengeStateDamage, this));
 	stateChanges_.emplace(STATE::DEATH, std::bind(&PlayerBase::ChengeStateDeath, this));
-
+	invincibleTime_ = 0.0f;	//無敵時間を初期化
 	ChengeState(STATE::LAND);
 }
 
@@ -28,21 +35,59 @@ PlayerBase::~PlayerBase(void)
 
 void PlayerBase::Init(void)
 {
+	
 }
 
 void PlayerBase::Update(void)
 {
+	for (auto& wave : waves)
+	{
+		if (wave == nullptr) { continue; }	//波がnullptrならスキップ
+		wave->Update();
+		if (wave->IsEnd())
+		{
+			wave = nullptr;	//波が終わったら削除
+		}
+	}
+	
+
+
 	stateUpdate_();
+	//モデルの位置を更新
+	MV1SetPosition(modelId_, pos_);
+	MV1SetRotationXYZ(modelId_, rot_);
 }
 
 void PlayerBase::Draw(void)
 {
+	for (auto& wave : waves)
+	{
+		if (wave == nullptr) { continue; }	//波がnullptrならスキップ
+		wave->Draw();
+	}
+	//モデル描画
+	if (!IsDeath())
+	{
+		MV1DrawModel(modelId_);
+	}
+	DrawFormatString(0, 0, 0xffffff, "%d",static_cast<int>( pos_.y));
 }
 
 void PlayerBase::Damage(void)
 {
 	hp_--;
 	ChengeState(STATE::DAMAGE);
+}
+
+std::vector<float> PlayerBase::GetWaveRadius(void) const
+{
+	std::vector<float>radiuss;
+	for (const auto& wave : waves)
+	{
+		if (wave == nullptr) { continue; }	//波がnullptrならスキップ
+		radiuss.push_back(wave->GetRadius());
+	}
+	return radiuss;
 }
 
 void PlayerBase::UpdateLand(void)
@@ -56,18 +101,71 @@ void PlayerBase::UpdateLand(void)
 
 void PlayerBase::UpdateJump(void)
 {
+	deceleration_ += JUMP_DECELERATION;	//減速率を増加させる
+	pos_.y += JUMP_SPEED - deceleration_;	//上昇速度から減速率を引く
+
+	auto& keyCon = KeyConfig::GetInstance();
+	if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::FAST_JUMP, static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1)))
+	{
+		waveSpeedType_ = Wave::SPEED_TYPE::FAST;
+		ChengeState(STATE::ROAL);
+	}
+	if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::SLOW_JUMP, static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1)))
+	{
+		waveSpeedType_ = Wave::SPEED_TYPE::SLOW;
+		ChengeState(STATE::ROAL);
+	}
+	if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::MIDIUM_JUMP, static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1)))
+	{
+		waveSpeedType_ = Wave::SPEED_TYPE::MIDIUM;
+		ChengeState(STATE::ROAL);
+	}
+
+	if (pos_.y < 0.0f)
+	{
+		pos_.y = 0.0f;
+		ChengeState(STATE::LAND);
+	}
 }
 
 void PlayerBase::UpdateRoal(void)
 {
+	rotFlame_++;
+	rot_.x += Utility::Deg2RadF(360.0f / JUMP_ROAL);	//回転角度を増加させる
+	if (rotFlame_ >= JUMP_ROAL)
+	{
+		rotFlame_ = 0.0f;	//回転フレーム数を初期化
+		ChengeState(STATE::DROP);
+	}
 }
 
 void PlayerBase::UpdateDrop(void)
 {
+	pos_.y -= JUMP_DROP_SPEED;	//落下速度を引く
+	if (pos_.y < 0.0f)
+	{
+		pos_.y = 0.0f;
+		MakeWave(waveSpeedType_);	//波を生成
+		ChengeState(STATE::LAND);
+	}
 }
 
 void PlayerBase::UpdateDamage(void)
 {
+	invincibleTime_++;
+	if (invincibleTime_ >= INVINCIBLE_TIME)	//無敵時間が経過したら
+	{
+		MV1SetDifColorScale(modelId_, { 1.0f, 1.0f, 1.0f, 1.0f });//無敵時間中は白くする
+		invincibleTime_ = 0.0f;	//無敵時間を初期化
+		if (hp_ <= 0)	//HPが0以下なら死亡状態へ
+		{
+			ChengeState(STATE::DEATH);
+		}
+		else
+		{
+			ChengeState(STATE::LAND);	//それ以外は地上状態へ
+		}
+	}
 }
 
 void PlayerBase::UpdateDeath(void)
@@ -77,7 +175,7 @@ void PlayerBase::UpdateDeath(void)
 void PlayerBase::ChengeState(STATE state)
 {
 	state_ = state;
-	stateChanges_[state_];
+	stateChanges_[state_]();
 }
 
 void PlayerBase::ChengeStateLand(void)
@@ -87,6 +185,7 @@ void PlayerBase::ChengeStateLand(void)
 
 void PlayerBase::ChengeStateJump(void)
 {
+	deceleration_ = 0.0f;	//減速率を初期化
 	stateUpdate_ = std::bind(&PlayerBase::UpdateJump, this);
 }
 
@@ -102,6 +201,7 @@ void PlayerBase::ChengeStateDrop(void)
 
 void PlayerBase::ChengeStateDamage(void)
 {
+	MV1SetDifColorScale(modelId_, { 1.0f, 0.0f, 0.0f, 1.0f });//ダメージ時は赤くする
 	stateUpdate_ = std::bind(&PlayerBase::UpdateDamage, this);
 }
 
@@ -114,4 +214,5 @@ void PlayerBase::MakeWave(Wave::SPEED_TYPE speedType)
 {
 	std::shared_ptr<Wave> wave;
 	wave = std::make_shared<Wave>(initPos_, speedType, color_);
+	waves.push_back(wave);
 }
