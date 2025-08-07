@@ -64,9 +64,9 @@ void TitleScene::Update(void)
 		}
 		
 	case TitleScene::MODE::EXIT:
-		if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::DECISION, KeyConfig::JOYPAD_NO::PAD1))
+		if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::END , KeyConfig::JOYPAD_NO::PAD1))
 		{
-			SceneManager::GetInstance().GameEnd();
+			Application::GetInstance().End();
 		}
 		break;
 	case TitleScene::MODE::OPERATION:
@@ -102,9 +102,10 @@ void TitleScene::Draw(void)
 		break;
 	case TitleScene::MODE::OPERATION:
 		DrawString(0, 0, "ê‡ñæÇ÷", 0xffffff);
-		DrawExtendGraph(0, 0, 400, 200, con_Img,true);
+		
+		DrawGraph(Application::SCREEN_SIZE_X / 2 -400, Application::SCREEN_SIZE_Y / 2 -200, con_Img, true);
 
-		DrawGraph(0, 0, con_Img, true);
+
 		
 		break;
 	default:

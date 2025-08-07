@@ -43,6 +43,7 @@ void KeyConfig::Init(void)
 	Add(KeyConfig::CONTROL_TYPE::SERECT_LEFT, KEY_INPUT_LEFT);
 	Add(KeyConfig::CONTROL_TYPE::SERECT_RIFHT, KEY_INPUT_RIGHT);
 	Add(KeyConfig::CONTROL_TYPE::DECISION, KEY_INPUT_SPACE);
+	Add(KeyConfig::CONTROL_TYPE::END, KEY_INPUT_ESCAPE);
 }
 
 void KeyConfig::Update(void)

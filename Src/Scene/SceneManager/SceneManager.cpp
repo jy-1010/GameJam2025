@@ -24,6 +24,7 @@ SceneManager::SceneManager(void)
 // デストラクタ
 SceneManager::~SceneManager(void)
 {
+	
 }
 
 // 初期化
