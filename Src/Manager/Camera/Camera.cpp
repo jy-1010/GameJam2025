@@ -18,6 +18,18 @@ Camera::Camera(int _playerNum)
 	localPos_ = Utility::VECTOR_ZERO;
 }
 
+Camera::Camera()
+{
+	angles_ = VECTOR();
+	cameraUp_ = VECTOR();
+	mode_ = MODE::NONE;
+	pos_ = Utility::VECTOR_ZERO;
+	targetPos_ = Utility::VECTOR_ZERO;
+	followTransform_ = nullptr;
+	padNo_ = static_cast<KeyConfig::JOYPAD_NO>(1);
+	localPos_ = Utility::VECTOR_ZERO;
+}
+
 Camera::~Camera(void)
 {
 }
@@ -57,7 +69,7 @@ void Camera::SetBeforeDraw(void)
 	//	SetBeforeDrawFPS();
 	//	break;
 	case Camera::MODE::FREE_CONTROLL:
-		SetBeforeDrawFreeControll();
+		//SetBeforeDrawFreeControll();
 		break;
 	case Camera::MODE::FIXED_UP:
 		SetBeforeDrawFixedUp();
@@ -365,66 +377,66 @@ void Camera::SetBeforeDrawFollow(void)
 //	SyncFollowFPS();
 //}
 
-void Camera::SetBeforeDrawFreeControll(void)
-{
-	auto& ins = KeyConfig::GetInstance();
-	float rotPow = Utility::Deg2RadF(SPEED);
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_RIGHT, padNo_)) { angles_.y += rotPow; }
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_LEFT, padNo_)) { angles_.y -= rotPow; }
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_UP, padNo_)) { angles_.x -= rotPow; }
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_DOWN, padNo_)) { angles_.x += rotPow; }
-
-	if (angles_.x <= FPS_LIMIT_X_UP_RAD)
-	{
-		angles_.x = FPS_LIMIT_X_UP_RAD;
-	}
-	if (angles_.x >= FPS_LIMIT_X_DW_RAD)
-	{
-		angles_.x = FPS_LIMIT_X_DW_RAD;
-	}
-	
-	auto rStick = ins.GetKnockRStickSize(padNo_);
-	rotPow = SPEED_PAD;
-	angles_.x += Utility::Deg2RadF(rStick.y *rotPow);
-	angles_.y += Utility::Deg2RadF(rStick.x *rotPow);
-
-	//if (ins.IsNew(KEY_INPUT_W)) 
-	//{
-	//	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetForward(), 3.0f));
-	//}
-	//if (ins.IsNew(KEY_INPUT_S))
-	//{
-	//	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetBack(), moveSpeed));
-	//}
-	static float moveSpeed = 10.0f;
-	static float moveSpeedFB = 30.0f;
-	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetForward(), ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_FRONT, padNo_) * moveSpeedFB));
-	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetBack(), ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_BACK, padNo_) * moveSpeedFB));
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_LEFT, padNo_))
-	{
-		pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetLeft(), moveSpeed));
-	}
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_RIGHT, padNo_))
-	{
-		pos_ =VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetRight(), moveSpeed));
-	}
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_UP, padNo_))
-	{
-		pos_ =VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetUp(), moveSpeed));
-	}
-	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_DOWN, padNo_))
-	{
-		pos_ =VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetDown(), moveSpeed));
-	}
-
-	VECTOR localPos;
-	rot_ =(Quaternion::Quaternion(angles_));
-	// 注視点(通常重力でいうところのY値を追従対象と同じにする)
-	localPos = rot_.PosAxis(LOCAL_F2T_POS);
-	targetPos_ = VAdd(pos_, localPos);
-
-
-}
+//void Camera::SetBeforeDrawFreeControll(void)
+//{
+//	auto& ins = KeyConfig::GetInstance();
+//	float rotPow = Utility::Deg2RadF(SPEED);
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_RIGHT, padNo_)) { angles_.y += rotPow; }
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_LEFT, padNo_)) { angles_.y -= rotPow; }
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_UP, padNo_)) { angles_.x -= rotPow; }
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_ROT_DOWN, padNo_)) { angles_.x += rotPow; }
+//
+//	if (angles_.x <= FPS_LIMIT_X_UP_RAD)
+//	{
+//		angles_.x = FPS_LIMIT_X_UP_RAD;
+//	}
+//	if (angles_.x >= FPS_LIMIT_X_DW_RAD)
+//	{
+//		angles_.x = FPS_LIMIT_X_DW_RAD;
+//	}
+//	
+//	auto rStick = ins.GetKnockRStickSize(padNo_);
+//	rotPow = SPEED_PAD;
+//	angles_.x += Utility::Deg2RadF(rStick.y *rotPow);
+//	angles_.y += Utility::Deg2RadF(rStick.x *rotPow);
+//
+//	//if (ins.IsNew(KEY_INPUT_W)) 
+//	//{
+//	//	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetForward(), 3.0f));
+//	//}
+//	//if (ins.IsNew(KEY_INPUT_S))
+//	//{
+//	//	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetBack(), moveSpeed));
+//	//}
+//	static float moveSpeed = 10.0f;
+//	static float moveSpeedFB = 30.0f;
+//	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetForward(), ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_FRONT, padNo_) * moveSpeedFB));
+//	pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetBack(), ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_BACK, padNo_) * moveSpeedFB));
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_LEFT, padNo_))
+//	{
+//		pos_ = VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetLeft(), moveSpeed));
+//	}
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_RIGHT, padNo_))
+//	{
+//		pos_ =VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetRight(), moveSpeed));
+//	}
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_UP, padNo_))
+//	{
+//		pos_ =VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetUp(), moveSpeed));
+//	}
+//	if (ins.IsNew(KeyConfig::CONTROL_TYPE::EDIT_CAMERA_MOVE_DOWN, padNo_))
+//	{
+//		pos_ =VAdd(pos_, VScale(Quaternion::Quaternion(angles_).GetDown(), moveSpeed));
+//	}
+//
+//	VECTOR localPos;
+//	rot_ =(Quaternion::Quaternion(angles_));
+//	// 注視点(通常重力でいうところのY値を追従対象と同じにする)
+//	localPos = rot_.PosAxis(LOCAL_F2T_POS);
+//	targetPos_ = VAdd(pos_, localPos);
+//
+//
+//}
 
 void Camera::SetBeforeDrawFixedUp(void)
 {

@@ -7,6 +7,8 @@
 #include"../Title/TitleScene.h"
 #include"../Game/GameScene.h"
 
+#include "../../Manager/Camera/Camera.h"
+
 SceneManager* SceneManager::instance_ = nullptr;
 
 // コンストラクタ
@@ -32,6 +34,12 @@ void SceneManager::Init(void)
 	Loading::GetInstance()->Init();
 	Loading::GetInstance()->Load();
 
+	camera_ = std::make_shared<Camera>();
+	camera_->Init();
+	camera_->SetPos({ 0.0f,10000.0f,50.0f });
+	camera_->SetTargetPos({ 0.0f,0.0f,0.0f });
+
+	KeyConfig::CreateInstance();
 
 	// 最初はタイトル画面から
 	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
@@ -48,6 +56,7 @@ void SceneManager::Update(void)
 	auto nowTime = std::chrono::system_clock::now();
 	deltaTime_ = static_cast<float>(
 		std::chrono::duration_cast<std::chrono::nanoseconds>(nowTime - preTime_).count() / 1000000000.0);
+	KeyConfig::GetInstance().Update();
 
 	// ロード中
 	if (Loading::GetInstance()->IsLoading())
@@ -73,6 +82,7 @@ void SceneManager::Update(void)
 // 描画
 void SceneManager::Draw(void)
 {
+	camera_->SetBeforeDraw();
 	// ロード中ならロード画面を描画
 	if (Loading::GetInstance()->IsLoading())
 	{
