@@ -8,6 +8,51 @@ class Utility
 {
 
 public:
+	enum class STRING_PLACE	//文字列を揃える位置
+	{
+		LEFT,		//左揃え
+		CENTER,		//中央揃え
+		RIGHT,		//右揃え
+	};
+
+	// ラジアン(rad)・度(deg)変換用
+	static constexpr float RAD2DEG = (180.0f / DX_PI_F);
+	static constexpr float DEG2RAD = (DX_PI_F / 180.0f);
+
+	static constexpr VECTOR VECTOR_ZERO = { 0.0f, 0.0f, 0.0f };
+	static constexpr VECTOR VECTOR_ONE = { 1.0f, 1.0f, 1.0f };
+
+	// 回転軸
+	static constexpr VECTOR AXIS_X = { 1.0f, 0.0f, 0.0f };
+	static constexpr VECTOR AXIS_Y = { 0.0f, 1.0f, 0.0f };
+	static constexpr VECTOR AXIS_Z = { 0.0f, 0.0f, 1.0f };
+	static constexpr VECTOR AXIS_XZ = { 1.0f, 0.0f, 1.0f };
+	static constexpr VECTOR AXIS_XY = { 1.0f, 1.0f, 1.0f };
+	static constexpr VECTOR AXIS_YZ = { 0.0f, 1.0f, 1.0f };
+	static constexpr VECTOR AXIS_XYZ = { 1.0f, 1.0f, 1.0f };
+
+	// 方向
+	static constexpr VECTOR DIR_F = { 0.0f, 0.0f, 1.0f };
+	static constexpr VECTOR DIR_B = { 0.0f, 0.0f, -1.0f };
+	static constexpr VECTOR DIR_R = { 1.0f, 0.0f, 0.0f };
+	static constexpr VECTOR DIR_L = { -1.0f, 0.0f, 0.0f };
+	static constexpr VECTOR DIR_U = { 0.0f, 1.0f, 0.0f };
+	static constexpr VECTOR DIR_D = { 0.0f, -1.0f, 0.0f };
+
+	//カラーコード
+	static constexpr int BLACK = 0x000000;	//黒
+	static constexpr int RED = 0xFF0000;	//赤
+	static constexpr int BLUE = 0x0000FF;	//青
+	static constexpr int YELLOW = 0xFFFF00;	//黄色
+	static constexpr int GREEN = 0x008000;	//緑
+	static constexpr int CYAN = 0x00FFFF;	//水色
+	static constexpr int PINK = 0xFFC0CB;	//桃色
+	static constexpr int ORANGE = 0xFFA500;	//オレンジ
+	static constexpr int LIME = 0xADFF2F;	//黄緑
+	static constexpr int PURPLE = 0x800080;	//紫
+	static constexpr int WHITE = 0xFFFFFF;	//白
+	static constexpr int GRAY = 0xBBBBBB;	//灰色
+	static constexpr int BROWN = 0x8B4513;	//茶色
 
 	// ラジアン(rad)・度(deg)変換用
 	static constexpr float RAD2DEG = (180.0f / DX_PI_F);
