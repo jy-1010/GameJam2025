@@ -3,6 +3,7 @@
 #include<DxLib.h>
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
+#include"../../Manager/Camera/Camera.h"
 #include"../../Manager/Input/InputManager.h"
 
 
@@ -16,6 +17,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Load(void)
 {
+
 }
 void TitleScene::Init(void)
 {
@@ -63,7 +65,6 @@ void TitleScene::Update(void)
 }
 void TitleScene::Draw(void)
 {
-
 	
 	DrawGraph(0, 0, title_Img, true);
 
