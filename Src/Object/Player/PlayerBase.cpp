@@ -2,10 +2,11 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/Input/KeyConfig.h"
 #include "../../Manager/Resource/ResourceManager.h"
+#include "../../Scene/Game/GameScene.h"
 #include "../UI/LifeUI.h"
 #include "PlayerBase.h"
 
-PlayerBase::PlayerBase(int playerNum,VECTOR pos)
+PlayerBase::PlayerBase(GameScene& gameScene, int playerNum,VECTOR pos) : gameScene_(gameScene)
 {
 	playerNum_ = playerNum;
 	color_ = playerNum == 0 ? Utility::RED : playerNum == 1 ? Utility::BLUE : playerNum == 2 ? Utility::YELLOW : Utility::GREEN;
@@ -92,6 +93,7 @@ void PlayerBase::Damage(VECTOR vec)
 	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
 	if (hp_ <= 0)
 	{
+		gameScene_.PlayerDeath(playerNum_);	//プレイヤーの死亡処理を行う
 		ChengeState(STATE::DEATH);	//HPが0以下なら死亡状態へ
 		return;
 	}

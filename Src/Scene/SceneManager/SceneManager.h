@@ -5,6 +5,7 @@
 
 #include <chrono>
 
+#include "../Game/GameScene.h"
 
 class SceneBase;
 class Camera;
@@ -64,6 +65,13 @@ public:
 
 	std::weak_ptr<Camera> GetCamera(void) { return camera_; }
 
+	// ランキングの取得
+	int GetLanking(int lankNum) const { return lanking_[lankNum - 1]; }
+	// ランキングの設定
+	void SetLanking(int lankNum, int playerNum) { lanking_[lankNum - 1] = playerNum + 1; }
+	// ランキングの初期化
+	void InitLanking(void) { for (int i = 0; i < GameScene::PLAYER_MAX; i++) { lanking_[i] = 0; } }
+
 private:
 	// デフォルトコンストラクタをprivateにして、
 	// 外部から生成できない様にする
@@ -100,6 +108,9 @@ private:
 	bool isGameEnd_;
 
 	std::shared_ptr<Camera> camera_;
+
+	int lanking_[GameScene::PLAYER_MAX];
+
 };
 
 using SCENE_ID = SceneManager::SCENE_ID;

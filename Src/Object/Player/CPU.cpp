@@ -1,6 +1,6 @@
 #include "CPU.h"
 
-CPU::CPU(int playerNum, VECTOR pos) : PlayerBase(playerNum, pos)
+CPU::CPU(GameScene& gameScene, int playerNum, VECTOR pos) : PlayerBase(gameScene,playerNum, pos)
 {
 	//CPU‚Ìó‘Ô‘JˆÚˆ—‚ğ“o˜^
 	stateChanges_.emplace(STATE::LAND, std::bind(&CPU::UpdateLand, this));

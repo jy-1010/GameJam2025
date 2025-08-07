@@ -4,7 +4,7 @@ class CPU :
     public PlayerBase
 {
 public:
-	CPU(int playerNum, VECTOR pos);
+	CPU(GameScene& gameScene, int playerNum, VECTOR pos);
 	~CPU(void)override;
 private:
 	static constexpr int RANDAM_MAX = 100;	//—”‚ÌÅ‘å’l(0~RAND_MAX‚Ü‚Å‚Ì’l‚ğ¶¬‚·‚é)

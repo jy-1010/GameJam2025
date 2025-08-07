@@ -6,6 +6,7 @@
 #include "../Wave.h"
 
 class LifeUI;
+class GameScene;
 
 class PlayerBase
 {
@@ -32,13 +33,13 @@ public:
 	static constexpr float JUMP_SPEED = 50.0f;	//ジャンプの上昇速度
 	static constexpr float JUMP_DECELERATION = JUMP_SPEED / (JUMP_DURABILITY / 2);	//ジャンプの減速率
 
-	static constexpr float JUMP_DROP_SPEED = 20.0f;	//落下速度
+	static constexpr float JUMP_DROP_SPEED = 40.0f;	//落下速度
 
 	static constexpr int MAX_HP = 3;
 
 	static constexpr float RADIUS = 50.0f;	//プレイヤーの半径
 
-	PlayerBase(int playerNum , VECTOR pos);
+	PlayerBase(GameScene& gameScene,int playerNum , VECTOR pos);
 	virtual ~PlayerBase(void);
 	virtual void Init(void);
 	virtual void Update(void);
@@ -56,6 +57,8 @@ protected:
 
 	static constexpr float DEATH_MOVE_SPEED_XZ = 20.0f;	//死亡時の移動速度
 	static constexpr float DEATH_MOVE_SPEED_Y = 10.0f;	//死亡時の移動速度
+
+	GameScene& gameScene_;	//ゲームシーン
 
 	int modelId_;
 	VECTOR pos_;

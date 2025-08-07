@@ -49,13 +49,18 @@ public:
 	/// <param name="time">揺れる時間(フレーム数)</param>
 	static void Shake(ShakeKinds kinds = ShakeKinds::DIAG, ShakeSize size = ShakeSize::MEDIUM, int time = 20);
 
+	void PlayerDeath(int playerNum);	// プレイヤーの死亡処理
+
 private:
+
 	std::shared_ptr<Stage>stage_;
 
 	//プレイヤー
 	std::shared_ptr<PlayerBase> players_[PLAYER_MAX];
 
 	void ColisionWave(void);	// 当たり判定チェック
+
+	int aliveCount_;	// 生存しているプレイヤーの数
 
 	int timeImg_;
 	float limitTime_;

@@ -51,11 +51,11 @@ void GameScene::Load(void)
 	{
 		if (i == 0)
 		{
-			players_[i] = std::make_shared<PlayerBase>(i, playerPoss[i]);
+			players_[i] = std::make_shared<PlayerBase>(*this,i, playerPoss[i]);
 		}
 		else
 		{
-			players_[i] = std::make_shared<CPU>(i, playerPoss[i]);
+			players_[i] = std::make_shared<CPU>(*this,i, playerPoss[i]);
 		}
 	}
 
@@ -65,13 +65,15 @@ void GameScene::Load(void)
 void GameScene::Init(void)
 {
 	limitTime_ = (float)LIMIT_TIME;
-
+	SceneManager::GetInstance().InitLanking();	// ランキングの初期化
 	// ヒットストップカウンターの初期化
 	hitStop_ = 0;
 
 	// スローカウンターの初期化
 	slow_ = 0;
 	slowInter_ = 5;
+
+	aliveCount_ = PLAYER_MAX;	// 生存しているプレイヤーの数を初期化
 
 	// 画面揺れ関係の初期化-----------------------------------------------------------
 	shake_ = 0;
@@ -98,8 +100,25 @@ void GameScene::Update(void)
 	}
 	ColisionWave();
 
+	if (aliveCount_ <= 1)
+	{	// 生存しているプレイヤーが1人以下なら
+		if (aliveCount_ == 1)
+		{
+			// 生存しているプレイヤーが1人なら
+			for (int i = 0; i < PLAYER_MAX; i++)
+			{
+				if (players_[i] && !players_[i]->IsDeath())
+				{	// 生存しているプレイヤーを見つけたら
+					SceneManager::GetInstance().SetLanking(aliveCount_, i);	// ランキングに登録
+					break;
+				}
+			}
+		}
+		//リザルトへの遷移処理
 
 
+		return;
+	}
 
 	limitTime_ -= SceneManager::GetInstance().GetDeltaTime();
 	if (limitTime_ <= 0.0f) {
@@ -151,6 +170,12 @@ void GameScene::Shake(ShakeKinds kinds, ShakeSize size, int time)
 	if ((abs(shake_ - time) > 10) || shake_ <= 0)shake_ = time;
 	shakeKinds_ = kinds;
 	shakeSize_ = size;
+}
+
+void GameScene::PlayerDeath(int playerNum)
+{
+	SceneManager::GetInstance().SetLanking(aliveCount_, playerNum);	// ランキングに登録
+	aliveCount_--;	// 生存しているプレイヤーの数を減らす
 }
 
 void GameScene::ColisionWave(void)

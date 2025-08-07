@@ -45,7 +45,7 @@ void SceneManager::Init(void)
 	KeyConfig::CreateInstance();
 
 	ResourceManager::CreateInstance();
-
+	InitLanking();
 	// Å‰‚Íƒ^ƒCƒgƒ‹‰æ–Ê‚©‚ç
 	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
 }
