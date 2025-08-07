@@ -1,9 +1,10 @@
 #pragma once
+#include <memory>;
 #include"../SceneBase.h"
 
 #include"../../Common/Vector2.h"
 
-class StageBase;
+class Stage;
 
 class GameScene : public SceneBase
 {
@@ -43,6 +44,7 @@ public:
 	static void Shake(ShakeKinds kinds = ShakeKinds::DIAG, ShakeSize size = ShakeSize::MEDIUM, int time = 20);
 
 private:
+	std::shared_ptr<Stage>stage_;
 
 	// ヒットストップカウンター
 	static int hitStop_;

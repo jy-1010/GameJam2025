@@ -7,6 +7,8 @@
 #include"../SceneManager/SceneManager.h"
 #include"../../Manager/Camera/Camera.h"
 
+#include"../../Object/Stage/Stage.h"
+
 int GameScene::hitStop_ = 0;
 
 int GameScene::slow_ = 0;
@@ -17,7 +19,8 @@ ShakeKinds GameScene::shakeKinds_ = ShakeKinds::DIAG;
 ShakeSize GameScene::shakeSize_ = ShakeSize::MEDIUM;
 
 GameScene::GameScene():
-	mainScreen_(-1)
+	mainScreen_(-1),
+	stage_()
 {
 }
 
@@ -29,6 +32,10 @@ void GameScene::Load(void)
 {
 	mainScreen_ = MakeScreen(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y);
 
+	stage_ = std::make_shared<Stage>();
+	stage_->Load();
+	SceneManager::GetInstance().GetCamera().lock()->SetPos(Stage::C_POS);
+	SceneManager::GetInstance().GetCamera().lock()->SetTargetPos(stage_->GetCenter());
 }
 void GameScene::Init(void)
 {
@@ -69,6 +76,9 @@ void GameScene::Draw(void)
 	using app = Application;
 	int x = app::SCREEN_SIZE_X / 2;
 	int y = app::SCREEN_SIZE_Y / 2;
+
+	stage_->Draw();
+
 
 	DrawString(0, 0, "ÉQÅ[ÉÄÉVÅ[Éì", 0xffffff);
 	//-------------------------------------------------
