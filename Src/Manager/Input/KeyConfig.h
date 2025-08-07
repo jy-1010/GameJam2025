@@ -84,6 +84,7 @@ public:
 		FAST_JUMP,
 		MIDIUM_JUMP,
 		SLOW_JUMP,
+		JUMP,
 		MAX,
 	};
 

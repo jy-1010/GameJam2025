@@ -38,6 +38,7 @@ void KeyConfig::Init(void)
 	Add(KeyConfig::CONTROL_TYPE::MIDIUM_JUMP, KEY_INPUT_S);
 	Add(KeyConfig::CONTROL_TYPE::SLOW_JUMP, KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT);
 	Add(KeyConfig::CONTROL_TYPE::SLOW_JUMP, KEY_INPUT_A);
+	Add(KeyConfig::CONTROL_TYPE::JUMP, KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN);
 }
 
 void KeyConfig::Update(void)
