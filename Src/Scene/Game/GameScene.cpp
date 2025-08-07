@@ -61,12 +61,13 @@ void GameScene::Draw(void)
 	SetDrawScreen(mainScreen_);
 	ClearDrawScreen();
 
+
 	//ï`âÊèàóù-----------------------------------------
 	using app = Application;
 	int x = app::SCREEN_SIZE_X / 2;
 	int y = app::SCREEN_SIZE_Y / 2;
 
-
+	DrawString(0, 0, "ÉQÅ[ÉÄÉVÅ[Éì", 0xffffff);
 	//-------------------------------------------------
 
 	SetDrawScreen(DX_SCREEN_BACK);

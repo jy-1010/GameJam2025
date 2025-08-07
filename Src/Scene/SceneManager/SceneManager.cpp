@@ -14,6 +14,9 @@ SceneManager::SceneManager(void)
 {
 	sceneId_ = SCENE_ID::NONE;
 	isGameEnd_ = false;
+
+	// デルタタイム
+	deltaTime_ = 1.0f / 60.0f;
 }
 
 // デストラクタ
@@ -40,6 +43,11 @@ void SceneManager::Update(void)
 {
 	// シーンがなければ終了
 	if (scenes_.empty()) { return; }
+
+	// デルタタイム
+	auto nowTime = std::chrono::system_clock::now();
+	deltaTime_ = static_cast<float>(
+		std::chrono::duration_cast<std::chrono::nanoseconds>(nowTime - preTime_).count() / 1000000000.0);
 
 	// ロード中
 	if (Loading::GetInstance()->IsLoading())
@@ -111,6 +119,8 @@ void SceneManager::ChangeScene(std::shared_ptr<SceneBase>scene)
 		//末尾のものを新しい物に入れ替える
 		scenes_.back() = scene;
 	}
+
+	ResetDeltaTime();
 
 	// 読み込み(非同期)
 	Loading::GetInstance()->StartAsyncLoad();
@@ -185,4 +195,15 @@ void SceneManager::JumpScene(SCENE_ID scene)
 	default:
 		break;
 	}
+}
+
+float SceneManager::GetDeltaTime(void) const
+{
+	return deltaTime_;
+}
+
+void SceneManager::ResetDeltaTime(void)
+{
+	deltaTime_ = 0.016f;
+	preTime_ = std::chrono::system_clock::now();
 }
