@@ -15,6 +15,7 @@ PlayerBase::PlayerBase(GameScene& gameScene, int playerNum,VECTOR pos) : gameSce
 	initPos_=pos_;
 	rot_ = { 0.0f, 0.0f, 0.0f };	//初期回転角度
 	hp_ = MAX_HP;
+	scale_ = { 1.0f,1.0f,1.0f };
 	isInvincible_ = false;	//無敵状態を初期化
 	rotFlame_ = 0.0f;	//回転フレーム数
 	modelId_ = ResourceManager::GetInstance().LoadModelDuplicate(
@@ -33,7 +34,6 @@ PlayerBase::PlayerBase(GameScene& gameScene, int playerNum,VECTOR pos) : gameSce
 	stateChanges_.emplace(STATE::DAMAGE, std::bind(&PlayerBase::ChengeStateDamage, this));
 	stateChanges_.emplace(STATE::DEATH, std::bind(&PlayerBase::ChengeStateDeath, this));
 	invincibleTime_ = 0.0f;	//無敵時間を初期化
-	ChengeState(STATE::LAND);
 
 	anime_ = std::make_shared<AnimationController>(modelId_);
 	for (int i = 0; i < (int)ANIM_TYPE::MAX; i++) {
@@ -41,6 +41,7 @@ PlayerBase::PlayerBase(GameScene& gameScene, int playerNum,VECTOR pos) : gameSce
 	}
 	anime_->Add((int)ANIM_TYPE::DANCE1, 30.0f, "Data/Model/Player/Dance1.mv1");
 	anime_->Play((int)ANIM_TYPE::IDLE);
+	ChengeState(STATE::LAND);
 }
 
 PlayerBase::~PlayerBase(void)
@@ -79,6 +80,7 @@ void PlayerBase::Update(void)
 	//モデルの位置を更新
 	MV1SetPosition(modelId_, pos_);
 	MV1SetRotationXYZ(modelId_, rot_);
+	MV1SetScale(modelId_, scale_);
 }
 
 void PlayerBase::Draw(void)
@@ -99,6 +101,7 @@ void PlayerBase::Damage(VECTOR vec)
 	if (isInvincible_) { return; }	//無敵状態ならダメージを受けない
 	isInvincible_ = true;	//無敵状態にする
 	hp_--;
+	anime_->Play((int)ANIM_TYPE::HIT_REACT,false);
 	KeyConfig::GetInstance().PadVibration(static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1), 500, 300);
 	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
 	if (hp_ <= 0)
@@ -180,6 +183,7 @@ void PlayerBase::UpdateDrop(void)
 	pos_.y -= JUMP_DROP_SPEED;	//落下速度を引く
 	if (pos_.y < 0.0f)
 	{
+		SoundManager::GetInstance().Play(SoundManager::SRC::HIPDROP_SE, Sound::TIMES::ONCE);
 		pos_.y = 0.0f;
 		MakeWave(waveSpeedType_);	//波を生成
 		ChengeState(STATE::LAND);
@@ -217,23 +221,29 @@ void PlayerBase::ChengeState(STATE state)
 
 void PlayerBase::ChengeStateLand(void)
 {
+	anime_->Play((int)ANIM_TYPE::IDLE);
 	stateUpdate_ = std::bind(&PlayerBase::UpdateLand, this);
 }
 
 void PlayerBase::ChengeStateJump(void)
 {
+	scale_ = { 1.0f,1.0f,1.0f };
+	anime_->Play((int)ANIM_TYPE::JUMP_IDLE);
 	deceleration_ = 0.0f;	//減速率を初期化
 	stateUpdate_ = std::bind(&PlayerBase::UpdateJump, this);
 }
 
 void PlayerBase::ChengeStateRoal(void)
 {
+	anime_->Play((int)ANIM_TYPE::IDLE);
+	scale_ = { 1.0f,0.5f,1.0f };
 	stateUpdate_ = std::bind(&PlayerBase::UpdateRoal, this);
 }
 
 void PlayerBase::ChengeStateDrop(void)
 {
-	SoundManager::GetInstance().Play(SoundManager::SRC::HIPDROP_SE, Sound::TIMES::ONCE);
+	scale_ = { 1.0f,1.0f,1.0f };
+	
 	stateUpdate_ = std::bind(&PlayerBase::UpdateDrop, this);
 }
 

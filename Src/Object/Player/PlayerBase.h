@@ -89,6 +89,7 @@ protected:
 	int modelId_;
 	VECTOR pos_;
 	VECTOR rot_;
+	VECTOR scale_;
 	VECTOR initPos_;
 	VECTOR deathVec_;	//死亡時のベクトル(ダメージを受けた方向)
 	int playerNum_;
