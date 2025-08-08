@@ -55,6 +55,7 @@ public:
 	// ‰ğ•úˆ—
 	void Release(void)override;
 private:
+	int img_;
 	std::vector<int>models_;
 	std::map<int, AnimationController*>anime_;
 
