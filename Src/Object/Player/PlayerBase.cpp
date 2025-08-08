@@ -2,6 +2,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/Input/KeyConfig.h"
 #include "../../Manager/Resource/ResourceManager.h"
+#include "../../Manager/Resource/SoundManager.h"
 #include "../../Scene/Game/GameScene.h"
 #include "../UI/LifeUI.h"
 #include "PlayerBase.h"
@@ -223,6 +224,7 @@ void PlayerBase::ChengeStateRoal(void)
 
 void PlayerBase::ChengeStateDrop(void)
 {
+	SoundManager::GetInstance().Play(SoundManager::SRC::HIPDROP_SE, Sound::TIMES::ONCE);
 	stateUpdate_ = std::bind(&PlayerBase::UpdateDrop, this);
 }
 

@@ -12,7 +12,7 @@ public:
 	{
 		TITLE_BGM,		//タイトルシーンのBGM
 
-		ENTER_SOUND,	//決定音
+		HIPDROP_SE,	//決定音
 
 		MAX
 

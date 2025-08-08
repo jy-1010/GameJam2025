@@ -11,6 +11,17 @@ Sound::Sound(void)
 	maxVolume_ = 255;
 }
 
+Sound::Sound(std::shared_ptr<Sound> sound)
+{
+	soundType_ = sound->soundType_;
+	path_ = sound->path_;
+
+	handleId_ = sound->handleId_;
+	pos_ =sound->pos_;
+	radius_ = 0.0f;
+	maxVolume_ = 255;
+}
+
 Sound::Sound(TYPE type, const std::string& path)
 {
 	soundType_ = type;
@@ -174,4 +185,13 @@ void Sound::DuplicateSound(void)
 		return;
 	}
 	handleId_ = DuplicateSoundMem(handleId_);
+}
+
+void Sound::DuplicateSound(int currentHandle)
+{
+	if (currentHandle == -1)
+	{
+		return;
+	}
+	handleId_ = DuplicateSoundMem(currentHandle);
 }
