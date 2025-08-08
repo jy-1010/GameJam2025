@@ -141,7 +141,6 @@ void SceneManager::ChangeScene(std::shared_ptr<SceneBase>scene)
 	}
 
 	ResetDeltaTime();
-	SoundManager::GetInstance().DeletePlayMap();
 	// “Ç‚Ýž‚Ý(”ñ“¯Šú)
 	Loading::GetInstance()->StartAsyncLoad();
 	scenes_.back()->Load();

@@ -6,6 +6,8 @@ class CPU :
 public:
 	CPU(GameScene& gameScene, int playerNum, VECTOR pos);
 	~CPU(void)override;
+
+	virtual void Damage(VECTOR vec)override;
 private:
 	static constexpr int RANDAM_MAX = 100;	//—”‚ÌÅ‘å’l(0~RAND_MAX‚Ü‚Å‚Ì’l‚ğ¶¬‚·‚é)
 

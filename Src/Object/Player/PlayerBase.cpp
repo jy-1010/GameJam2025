@@ -99,6 +99,7 @@ void PlayerBase::Damage(VECTOR vec)
 	if (isInvincible_) { return; }	//無敵状態ならダメージを受けない
 	isInvincible_ = true;	//無敵状態にする
 	hp_--;
+	KeyConfig::GetInstance().PadVibration(static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1), 500, 300);
 	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
 	if (hp_ <= 0)
 	{

@@ -74,7 +74,7 @@ public:
 	const int GetHp(void) { return hp_; }
 	bool IsLand(void) { return state_ == STATE::LAND; }
 	bool IsDeath(void) { return state_ == STATE::DEATH; }
-	void Damage(VECTOR vec);
+	virtual void Damage(VECTOR vec);
 
 	VECTOR GetInitPos(void) const { return initPos_; }
 	std::vector<float> GetWaveRadius(void) const;
