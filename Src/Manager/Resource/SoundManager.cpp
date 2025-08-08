@@ -184,3 +184,8 @@ void SoundManager::Set3DListenPosAndFrontPos(VECTOR pos, VECTOR frontPos)
 {
 	Set3DSoundListenerPosAndFrontPos_UpVecY(pos, frontPos);
 }
+
+void SoundManager::DeletePlayMap(void)
+{
+	playMap_.clear();
+}
