@@ -4,6 +4,7 @@
 #include <memory>
 #include <map>
 #include "../Wave.h"
+#include"../../Manager/AnimationController/AnimationController.h"
 
 class LifeUI;
 class GameScene;
@@ -38,6 +39,31 @@ public:
 	static constexpr int MAX_HP = 3;
 
 	static constexpr float RADIUS = 50.0f;	//プレイヤーの半径
+
+	//アニメーション種別
+	enum class ANIM_TYPE
+	{
+		DEATH,
+		DUCK,
+		HIT_REACT,
+		IDLE,
+		IDLE_ATTACK,
+		IDLE_HOLD,
+		JUMP,
+		JUMP_IDLE,
+		JUMP_LAND,
+		NO,
+		PUNCH,
+		RUN,
+		RUN_ATTACK,
+		RUN_HOLD,
+		WALK,
+		WALK_HOLD,
+		WAVE,
+		YES,
+		MAX,
+		DANCE1,
+	};
 
 	PlayerBase(GameScene& gameScene,int playerNum , VECTOR pos);
 	virtual ~PlayerBase(void);
@@ -79,6 +105,8 @@ protected:
 	float deceleration_;	//減速率
 
 	bool isInvincible_;	//無敵状態かどうか
+
+	std::shared_ptr<AnimationController>anime_;
 
 	std::map<STATE, std::function<void(void)>> stateChanges_;
 	std::function<void(void)> stateUpdate_;

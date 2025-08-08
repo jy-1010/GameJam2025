@@ -34,6 +34,13 @@ PlayerBase::PlayerBase(GameScene& gameScene, int playerNum,VECTOR pos) : gameSce
 	stateChanges_.emplace(STATE::DEATH, std::bind(&PlayerBase::ChengeStateDeath, this));
 	invincibleTime_ = 0.0f;	//–³“GŠÔ‚ğ‰Šú‰»
 	ChengeState(STATE::LAND);
+
+	anime_ = std::make_shared<AnimationController>(modelId_);
+	for (int i = 0; i < (int)ANIM_TYPE::MAX; i++) {
+		anime_->AddInFbx(i, 30.0f, i);
+	}
+	anime_->Add((int)ANIM_TYPE::DANCE1, 30.0f, "Data/Model/Player/Dance1.mv1");
+	anime_->Play((int)ANIM_TYPE::IDLE);
 }
 
 PlayerBase::~PlayerBase(void)
@@ -56,6 +63,7 @@ void PlayerBase::Update(void)
 			wave = nullptr;	//”g‚ªI‚í‚Á‚½‚çíœ
 		}
 	}
+	anime_->Update();
 	if (isInvincible_)
 	{
 		invincibleTime_++;
