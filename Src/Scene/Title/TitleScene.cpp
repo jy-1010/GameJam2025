@@ -4,15 +4,18 @@
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
 #include"../../Manager/Input/KeyConfig.h"
+#include"../../Manager/Resource/SoundManager.h"
 #include"../../Manager/Camera/Camera.h"
 
 
 TitleScene::TitleScene()
 {
+	SoundManager::GetInstance().Play(SoundManager::SRC::TITLE_BGM, Sound::TIMES::LOOP);
 }
 
 TitleScene::~TitleScene()
 {
+	SoundManager::GetInstance().Stop(SoundManager::SRC::TITLE_BGM);
 }
 
 void TitleScene::Load(void)

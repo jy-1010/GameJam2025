@@ -7,6 +7,7 @@
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
 #include"../../Manager/Camera/Camera.h"
+#include"../../Manager/Resource/SoundManager.h"
 
 #include"Start.h"
 #include"../../Object/Stage/Stage.h"
@@ -30,10 +31,12 @@ GameScene::GameScene():
 	timeImg_(-1),
 	limitTime_(0.0f)
 {
+	SoundManager::GetInstance().Play(SoundManager::SRC::GAME_BGM, Sound::TIMES::LOOP);
 }
 
 GameScene::~GameScene()
 {
+	SoundManager::GetInstance().Stop(SoundManager::SRC::GAME_BGM);
 }
 
 void GameScene::Load(void)

@@ -11,8 +11,10 @@ public:
 	enum class SRC
 	{
 		TITLE_BGM,		//タイトルシーンのBGM
+		GAME_BGM,
+		RESULT_BGM,
 
-		HIPDROP_SE,	//決定音
+		HIPDROP_SE,	//ヒップドロップ
 
 		MAX
 

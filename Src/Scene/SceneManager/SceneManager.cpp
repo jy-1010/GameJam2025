@@ -49,7 +49,7 @@ void SceneManager::Init(void)
 	SoundManager::CreateInstance();
 	InitLanking();
 	// Å‰‚Íƒ^ƒCƒgƒ‹‰æ–Ê‚©‚ç
-	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
+	ChangeScene(SCENE_ID::TITLE);
 }
 
 
@@ -140,7 +140,6 @@ void SceneManager::ChangeScene(std::shared_ptr<SceneBase>scene)
 	}
 
 	ResetDeltaTime();
-	SoundManager::GetInstance().DeletePlayMap();
 	// “Ç‚İ‚İ(”ñ“¯Šú)
 	Loading::GetInstance()->StartAsyncLoad();
 	scenes_.back()->Load();
