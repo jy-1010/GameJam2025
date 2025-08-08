@@ -19,7 +19,7 @@ Explanat::~Explanat()
 
 void Explanat::Load(void)
 {
-
+	img_ = Utility::LoadImg("Data/Image/Start/Illustrate.png");
 	bottonImg_[0] = Utility::LoadImg("Data/Image/Start/SpaceKey.png");
 	bottonImg_[1] = Utility::LoadImg("Data/Image/Start/Abutton.png");
 }
@@ -46,10 +46,9 @@ void Explanat::Draw(void)
 	int x = xx / 2;
 	int y = yy / 2;
 
-	DrawBox(x / 2, y / 2, x + (x / 2), y + (y / 2), 0x000000, true);
-	DrawString(x / 2, y / 2, "àÍñáäGÇ≈ÇÌÇ©ÇËÇ‚Ç∑Ç¢ê‡ñæÇ›ÇΩÇ¢Ç»ÇÃÇ±Ç±Ç…Ç¢ÇÍÇΩÇ¢", 0xffffff);
+	DrawExtendGraph(x / 2, y / 2, x + (x / 2), y + (y / 2), img_, true);
 	DrawRotaGraph(x, y, 1, 0, img_, true);
-	DrawRotaGraph(x + (x / 2)-150, y + (y / 2) - 50, abs(sinf(s_))*0.1f+0.3f, 0, bottonImg_[(IsAnyXboxController()) ? 1 : 0], true);
+	DrawRotaGraph(x + (x / 2), y + (y / 2) - 30, abs(sinf(s_))*0.1f+0.3f, 0, bottonImg_[(IsAnyXboxController()) ? 1 : 0], true);
 }
 
 void Explanat::Release(void)

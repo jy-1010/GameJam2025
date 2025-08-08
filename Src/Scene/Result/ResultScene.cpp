@@ -5,6 +5,7 @@
 #include"../../Utility/Utility.h"
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h";
+#include"../../Manager/Camera/Camera.h"
 
 ResultScene::ResultScene()
 {
@@ -16,6 +17,9 @@ ResultScene::~ResultScene()
 
 void ResultScene::Load(void)
 {
+	SceneManager::GetInstance().GetCamera().lock()->SetPos(VAdd(RESULT_POS[0], C_POS));
+	SceneManager::GetInstance().GetCamera().lock()->SetTargetPos(VAdd(RESULT_POS[0], T_POS));
+
 	Utility::LoadImg(img_, "Data/Image/VICTORY.png");
 	for (int i = 1; i <= SceneManager::GetInstance().GetTopNum(); i++) {
 		models_.emplace_back(MV1LoadModel((MODEL_ID + std::to_string(SceneManager::GetInstance().GetLanking(i)) + ".mv1").c_str()));

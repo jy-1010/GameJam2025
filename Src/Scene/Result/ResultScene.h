@@ -16,6 +16,9 @@ public:
 		{1200.0f,0.0f,1000.0f},
 		{1400.0f,0.0f,1000.0f}
 	};
+	static constexpr VECTOR C_POS = { 0.0f,200.0f,-400.0f };
+	static constexpr VECTOR T_POS = { 0.0f,200.0f,0.0f };
+
 	//アニメーション種別
 	enum class ANIM_TYPE
 	{
