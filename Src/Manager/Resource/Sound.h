@@ -1,5 +1,6 @@
 #pragma once
 #include<string>
+#include<memory>
 #include<DxLib.h>
 
 
@@ -23,6 +24,9 @@ public:
 
 	// コンストラクタ
 	Sound(void);
+
+	Sound(std::shared_ptr<Sound> sound);
+
 	// コンストラクタ
 	Sound(TYPE type, const std::string& path);
 
@@ -71,4 +75,5 @@ public:
 	void ChengeMaxVolume(float per);//音の最大音量を変える
 
 	void DuplicateSound(void);
+	void DuplicateSound(int currentHandle);
 };

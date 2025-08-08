@@ -10,6 +10,7 @@
 
 #include "../../Manager/Camera/Camera.h"
 #include "../../Manager/Resource/ResourceManager.h"
+#include "../../Manager/Resource/SoundManager.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
 
@@ -45,6 +46,7 @@ void SceneManager::Init(void)
 	KeyConfig::CreateInstance();
 
 	ResourceManager::CreateInstance();
+	SoundManager::CreateInstance();
 	InitLanking();
 	// Å‰‚Íƒ^ƒCƒgƒ‹‰æ–Ê‚©‚ç
 	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
