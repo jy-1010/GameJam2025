@@ -33,12 +33,17 @@ private:
 	int title_Img;
 
 	int con_Img;
-	
+
+	int play_Img;
+
+	int eixt_Img;
 	// ÉVÅ[ÉìID
 	MODE modeId_;
 
 	bool gameExit_;
 
 	bool drawAlive_;
+	
+	bool IsEnd_;
 
 };

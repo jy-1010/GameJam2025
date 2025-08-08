@@ -88,6 +88,7 @@ public:
 		SERECT_RIFHT,
 		SERECT_LEFT,
 		DECISION,
+		EXITDECISION,
 		END,
 		MAX,
 	};
