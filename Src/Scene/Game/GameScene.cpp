@@ -81,6 +81,7 @@ void GameScene::Init(void)
 	shakeSize_ = ShakeSize::MEDIUM;;
 	//--------------------------------------------------------------------------------
 
+	this->Update();
 	SceneManager::GetInstance().PushScene(std::make_shared<Start>());
 }
 void GameScene::Update(void)
