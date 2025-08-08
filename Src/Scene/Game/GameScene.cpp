@@ -48,18 +48,9 @@ void GameScene::Load(void)
 	stage_ = std::make_shared<Stage>();
 	stage_->Load();
 
-	auto playerPoss = stage_->GetPos();
-
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (i <= 0)
-		{
-			players_[i] = std::make_shared<PlayerBase>(*this,i, playerPoss[i]);
-		}
-		else
-		{
-			players_[i] = std::make_shared<CPU>(*this,i, playerPoss[i]);
-		}
+		players_[i] = nullptr;
 	}
 
 	SceneManager::GetInstance().GetCamera().lock()->SetPos(Stage::C_POS);
@@ -84,7 +75,7 @@ void GameScene::Init(void)
 	//--------------------------------------------------------------------------------
 
 	limitTime_ = (float)LIMIT_TIME;
-	this->Update();
+	//this->Update();
 	limitTime_ = (float)LIMIT_TIME;
 	SceneManager::GetInstance().PushScene(std::make_shared<Start>());
 }
@@ -157,6 +148,10 @@ void GameScene::Draw(void)
 
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
+		if (players_[i] == nullptr)
+		{
+			continue;
+		}
 		players_[i]->Draw();
 	}
 
@@ -189,6 +184,22 @@ void GameScene::PlayerDeath(int playerNum)
 {
 	SceneManager::GetInstance().SetLanking(aliveCount_, playerNum);	// ランキングに登録
 	aliveCount_--;	// 生存しているプレイヤーの数を減らす
+}
+
+void GameScene::PlayerLoad(int num)
+{
+	auto playerPoss = stage_->GetPos();
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		if (i < num)
+		{
+			players_[i] = std::make_shared<PlayerBase>(*this, i, playerPoss[i]);
+		}
+		else
+		{
+			players_[i] = std::make_shared<CPU>(*this, i, playerPoss[i]);
+		}
+	}
 }
 
 void GameScene::ColisionWave(void)
