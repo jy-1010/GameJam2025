@@ -7,7 +7,7 @@
 class Stage
 {
 public:
-	static constexpr VECTOR C_POS = { 1000.0f,1000.0f,200.0f };
+	static constexpr VECTOR C_POS = { 1000.0f,1400.0f,400.0f };
 
 	Stage();
 	~Stage();
