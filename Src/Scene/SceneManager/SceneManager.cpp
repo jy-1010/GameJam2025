@@ -7,6 +7,7 @@
 #include"../Title/TitleScene.h"
 #include"../Game/GameScene.h"
 #include"../Game/Start.h"
+#include"../Result/ResultScene.h"
 
 #include "../../Manager/Camera/Camera.h"
 #include "../../Manager/Resource/ResourceManager.h"
@@ -49,7 +50,7 @@ void SceneManager::Init(void)
 	SoundManager::CreateInstance();
 	InitLanking();
 	// ç≈èâÇÕÉ^ÉCÉgÉãâÊñ Ç©ÇÁ
-	ChangeScene(std::make_shared<TitleScene>(TitleScene()));
+	ChangeScene(SCENE_ID::TITLE);
 }
 
 
@@ -157,6 +158,9 @@ void SceneManager::ChangeScene(SCENE_ID scene)
 	case SceneManager::SCENE_ID::GAME:
 		ChangeScene(std::make_shared<GameScene>());
 		break;
+	case SceneManager::SCENE_ID::RESULT:
+		ChangeScene(std::make_shared<ResultScene>());
+		break;
 	default:
 		break;
 	}
@@ -181,6 +185,9 @@ void SceneManager::PushScene(SCENE_ID scene)
 		break;
 	case SceneManager::SCENE_ID::GAME:
 		PushScene(std::make_shared<GameScene>());
+		break;
+	case SceneManager::SCENE_ID::RESULT:
+		PushScene(std::make_shared<ResultScene>());
 		break;
 	default:
 		break;
@@ -215,6 +222,9 @@ void SceneManager::JumpScene(SCENE_ID scene)
 		break;
 	case SceneManager::SCENE_ID::GAME:
 		JumpScene(std::make_shared<GameScene>());
+		break;
+	case SceneManager::SCENE_ID::RESULT:
+		JumpScene(std::make_shared<ResultScene>());
 		break;
 	default:
 		break;
