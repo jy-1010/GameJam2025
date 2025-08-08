@@ -2,6 +2,7 @@
 #include "../../Scene/Game/GameScene.h"
 #include "../UI/LifeUI.h"
 #include "CPU.h"
+#include "../../Manager/Resource/SoundManager.h"
 
 CPU::CPU(GameScene& gameScene, int playerNum, VECTOR pos) : PlayerBase(gameScene,playerNum, pos)
 {
@@ -24,6 +25,7 @@ void CPU::Damage(VECTOR vec)
 	if (isInvincible_) { return; }	//無敵状態ならダメージを受けない
 	isInvincible_ = true;	//無敵状態にする
 	hp_--;
+	SoundManager::GetInstance().Play(SoundManager::SRC::DAMAGE_SE, Sound::TIMES::ONCE);
 	lifeUI_->SetLife(hp_);	//ライフUIに現在のHPを設定
 	if (hp_ <= 0)
 	{

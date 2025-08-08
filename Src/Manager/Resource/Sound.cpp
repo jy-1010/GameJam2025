@@ -8,6 +8,7 @@ Sound::Sound(void)
 	handleId_ = -1;
 	pos_ = { 0.0f,0.0f,0.0f };
 	radius_ = 0.0f;
+	pitch_ = 0.0f;
 	maxVolume_ = 255;
 }
 
@@ -19,6 +20,7 @@ Sound::Sound(std::shared_ptr<Sound> sound)
 	handleId_ = sound->handleId_;
 	pos_ =sound->pos_;
 	radius_ = 0.0f;
+	pitch_ = 0.0f;
 	maxVolume_ = 255;
 }
 
@@ -30,6 +32,7 @@ Sound::Sound(TYPE type, const std::string& path)
 	handleId_ = -1;
 	pos_ = { 0.0f,0.0f,0.0f };
 	radius_ = 0.0f;
+	pitch_ = 0.0f;
 	maxVolume_ = 255;
 }
 
@@ -61,11 +64,22 @@ void Sound::Load(void)
 		break;
 	case Sound::TYPE::SOUND_2D:
 		SetCreate3DSoundFlag(false);
+		if (pitch_ != 0.0f)
+		{
+			SetCreateSoundPitchRate(pitch_);
+		}
 		handleId_ = LoadSoundMem(path_.c_str());
+		SetCreateSoundPitchRate(0.0f);
+
 		break;
 	case Sound::TYPE::SOUND_3D:
 		SetCreate3DSoundFlag(true);
+		if (pitch_ != 0.0f)
+		{
+			SetCreateSoundPitchRate(pitch_);
+		}
 		handleId_ = LoadSoundMem(path_.c_str());
+		SetCreateSoundPitchRate(0.0f);
 		break;
 	default:
 		break;
@@ -184,7 +198,9 @@ void Sound::DuplicateSound(void)
 	{
 		return;
 	}
+	//SetCreateSoundPitchRate(pitch_);
 	handleId_ = DuplicateSoundMem(handleId_);
+	//SetCreateSoundPitchRate(0.0f);
 }
 
 void Sound::DuplicateSound(int currentHandle)
@@ -193,5 +209,7 @@ void Sound::DuplicateSound(int currentHandle)
 	{
 		return;
 	}
+	SetCreateSoundPitchRate(pitch_);
 	handleId_ = DuplicateSoundMem(currentHandle);
+	SetCreateSoundPitchRate(0.0f);
 }

@@ -61,6 +61,8 @@ public:
 	VECTOR pos_;	//座標
 	float radius_;	//有効範囲
 
+	float pitch_;	//ピッチ
+
 	bool Play(TIMES times);						//2D用音源再生
 	bool Play(VECTOR pos, float radius, TIMES times);	//3D用音源再生
 
@@ -73,6 +75,8 @@ public:
 	void ChengeVolume(float per);	//音の大きさを変える
 
 	void ChengeMaxVolume(float per);//音の最大音量を変える
+
+	void SetPitch(float pitch) { pitch_ = pitch; }
 
 	void DuplicateSound(void);
 	void DuplicateSound(int currentHandle);

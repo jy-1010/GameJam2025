@@ -25,6 +25,7 @@ void SoundManager::Init(void)
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::GAME_BGM);
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::RESULT_BGM);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::HIPDROP_SE);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::DAMAGE_SE);
 	//ç≈ëÂçƒê∂êîÇèâä˙âªÇ∑ÇÈ
 	for (int i = 0; i < static_cast<int>(SRC::MAX);i++)
 	{
@@ -43,13 +44,18 @@ void SoundManager::Init(void)
 	res->ChengeMaxVolume(0.5f);
 	loadMap_.emplace(SRC::GAME_BGM, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "Result.mp3");
-	res->ChengeMaxVolume(1.0f);
+	res->ChengeMaxVolume(0.5f);
 	loadMap_.emplace(SRC::RESULT_BGM, std::move(res));
 
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "HipDrop.mp3");
 	res->ChengeMaxVolume(1.0f);
+	res->SetPitch(2400.0f);
 	maxPlayNum[SRC::HIPDROP_SE] = 100;
 	loadMap_.emplace(SRC::HIPDROP_SE, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "HipDrop.mp3");
+	res->ChengeMaxVolume(1.0f);
+	maxPlayNum[SRC::DAMAGE_SE] = 100;
+	loadMap_.emplace(SRC::DAMAGE_SE, std::move(res));
 }
 
 void SoundManager::Release(void)
