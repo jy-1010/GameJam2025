@@ -20,6 +20,7 @@ public:
 
 		TITLE,
 		GAME,
+		RESULT,
 
 		MAX
 	};
@@ -71,6 +72,9 @@ public:
 	void SetLanking(int lankNum, int playerNum) { lanking_[lankNum - 1] = playerNum + 1; }
 	// ランキングの初期化
 	void InitLanking(void) { for (int i = 0; i < GameScene::PLAYER_MAX; i++) { lanking_[i] = 0; } }
+	// 1位が何人いるかの設定
+	void SetTopNum(int num) { topNum_ = num; }
+	int GetTopNum(void) { return topNum_; }
 
 private:
 	// デフォルトコンストラクタをprivateにして、
@@ -110,6 +114,7 @@ private:
 	std::shared_ptr<Camera> camera_;
 
 	int lanking_[GameScene::PLAYER_MAX];
+	int topNum_;
 
 };
 

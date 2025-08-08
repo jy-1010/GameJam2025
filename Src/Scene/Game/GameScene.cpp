@@ -116,15 +116,23 @@ void GameScene::Update(void)
 			}
 		}
 		//リザルトへの遷移処理
-
-
+		SceneManager::GetInstance().SetTopNum(1);
+		SceneManager::GetInstance().ChangeScene(SCENE_ID::RESULT);
 		return;
 	}
 
 	limitTime_ -= SceneManager::GetInstance().GetDeltaTime();
 	if (limitTime_ <= 0.0f) {
 		// 時間切れ
-
+		SceneManager::GetInstance().SetTopNum(aliveCount_);
+		for (int i = 0; i < PLAYER_MAX; i++)
+		{
+			if (players_[i] && !players_[i]->IsDeath())
+			{	// 生存しているプレイヤーを見つけたら
+				SceneManager::GetInstance().SetLanking(aliveCount_--, i);	// ランキングに登録
+			}
+		}
+		SceneManager::GetInstance().ChangeScene(SCENE_ID::RESULT);
 	}
 }
 void GameScene::Draw(void)

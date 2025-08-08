@@ -11,10 +11,10 @@ public:
 	static constexpr const char* MODEL_ID = "Data/Model/Player/Player";
 	static constexpr VECTOR RESULT_POS[4] =
 	{
-		{0.0f,0.0f,0.0f},
-		{0.0f,0.0f,0.0f},
-		{0.0f,0.0f,0.0f},
-		{0.0f,0.0f,0.0f}
+		{1000.0f,0.0f,1000.0f},
+		{800.0f,0.0f,1000.0f},
+		{1200.0f,0.0f,1000.0f},
+		{1400.0f,0.0f,1000.0f}
 	};
 	//アニメーション種別
 	enum class ANIM_TYPE
@@ -57,5 +57,7 @@ public:
 private:
 	std::vector<int>models_;
 	std::map<int, AnimationController*>anime_;
+
+	bool prevTrg_, nowTrg_;
 };
 
