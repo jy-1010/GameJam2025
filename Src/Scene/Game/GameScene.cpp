@@ -64,7 +64,6 @@ void GameScene::Load(void)
 }
 void GameScene::Init(void)
 {
-	limitTime_ = (float)LIMIT_TIME;
 	SceneManager::GetInstance().InitLanking();	// ランキングの初期化
 	// ヒットストップカウンターの初期化
 	hitStop_ = 0;
@@ -81,7 +80,9 @@ void GameScene::Init(void)
 	shakeSize_ = ShakeSize::MEDIUM;;
 	//--------------------------------------------------------------------------------
 
+	limitTime_ = (float)LIMIT_TIME;
 	this->Update();
+	limitTime_ = (float)LIMIT_TIME;
 	SceneManager::GetInstance().PushScene(std::make_shared<Start>());
 }
 void GameScene::Update(void)
