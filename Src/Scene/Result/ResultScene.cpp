@@ -2,6 +2,8 @@
 
 #include<string>
 
+#include"../../Utility/Utility.h"
+#include"../../Application.h"
 #include"../SceneManager/SceneManager.h";
 
 ResultScene::ResultScene()
@@ -14,6 +16,7 @@ ResultScene::~ResultScene()
 
 void ResultScene::Load(void)
 {
+	Utility::LoadImg(img_, "Data/Image/VICTORY.png");
 	for (int i = 1; i <= SceneManager::GetInstance().GetTopNum(); i++) {
 		models_.emplace_back(MV1LoadModel((MODEL_ID + std::to_string(SceneManager::GetInstance().GetLanking(i)) + ".mv1").c_str()));
 		anime_[models_[models_.size() - 1]] = new AnimationController(models_[models_.size() - 1]);
@@ -39,7 +42,7 @@ void ResultScene::Update(void)
 	for (auto& a : anime_) { a.second->Update(); }
 
 	prevTrg_ = nowTrg_;
-	nowTrg_ = (CheckHitKeyAll() == 1) ? true : false;
+	nowTrg_ = (CheckHitKey(KEY_INPUT_SPACE)==0) ?false : true;
 
 	if (!prevTrg_ && nowTrg_) {
 		SceneManager::GetInstance().ChangeScene(SCENE_ID::TITLE);
@@ -48,6 +51,9 @@ void ResultScene::Update(void)
 
 void ResultScene::Draw(void)
 {
+	int x = Application::SCREEN_SIZE_X;
+	int y = Application::SCREEN_SIZE_Y;
+	DrawExtendGraph(0, 0, x, y, img_, true);
 
 	for (auto& model : models_) {
 		MV1DrawModel(model);
@@ -59,4 +65,5 @@ void ResultScene::Release(void)
 	for (auto& a : anime_) { a.second->Release(); delete a.second; }
 	for (auto& model : models_) { MV1DeleteModel(model); }
 	models_.clear();
+	DeleteGraph(img_);
 }
