@@ -52,7 +52,7 @@ void GameScene::Load(void)
 
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (i == 0)
+		if (i <= 0)
 		{
 			players_[i] = std::make_shared<PlayerBase>(*this,i, playerPoss[i]);
 		}
