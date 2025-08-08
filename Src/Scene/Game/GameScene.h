@@ -51,6 +51,7 @@ public:
 
 	void PlayerDeath(int playerNum);	// ƒvƒŒƒCƒ„[‚Ì€–Sˆ—
 
+	void PlayerLoad(int num);
 private:
 
 	std::shared_ptr<Stage>stage_;

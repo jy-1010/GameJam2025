@@ -6,6 +6,8 @@
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h"
 
+#include"Select.h"
+
 Explanat::Explanat():
 	img_(-1),
 	bottonImg_(),
@@ -27,12 +29,17 @@ void Explanat::Load(void)
 void Explanat::Init(void)
 {
 	s_ = 0.0f;
+	prevTrg_ = true;
+	nowTrg_ = true;
+	SceneManager::GetInstance().PushScene(std::make_shared<Select>());
 }
 
 void Explanat::Update(void)
 {
 	int input = GetJoypadInputState(DX_INPUT_PAD1);
-	if ((input & PAD_INPUT_A) || (CheckHitKey(KEY_INPUT_SPACE) == 1)) {
+	prevTrg_ = nowTrg_;
+	nowTrg_ = ((input & PAD_INPUT_A) == 0 && (CheckHitKey(KEY_INPUT_SPACE) == 0)) ? false : true;
+	if (!prevTrg_ && nowTrg_) {
 		SceneManager::GetInstance().PopScene();
 	}
 

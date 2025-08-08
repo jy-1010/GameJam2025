@@ -76,6 +76,9 @@ public:
 	void SetTopNum(int num) { topNum_ = num; }
 	int GetTopNum(void) { return topNum_; }
 
+
+	std::list<std::shared_ptr<SceneBase>>GetScenes(void) { return scenes_; }
+
 private:
 	// デフォルトコンストラクタをprivateにして、
 	// 外部から生成できない様にする
@@ -83,11 +86,11 @@ private:
 	// デストラクタも同様
 	~SceneManager(void);
 
-	// コピー・ムーブ操作を禁止
-	SceneManager(const SceneManager&) = delete;
-	SceneManager& operator=(const SceneManager&) = delete;
-	SceneManager(SceneManager&&) = delete;
-	SceneManager& operator=(SceneManager&&) = delete;
+	//// コピー・ムーブ操作を禁止
+	//SceneManager(const SceneManager&) = delete;
+	//SceneManager& operator=(const SceneManager&) = delete;
+	//SceneManager(SceneManager&&) = delete;
+	//SceneManager& operator=(SceneManager&&) = delete;
 
 	// 下記をコンパイルエラーさせるため 上記を追加
 	// SceneManager copy = *SceneManager::GetInstance();

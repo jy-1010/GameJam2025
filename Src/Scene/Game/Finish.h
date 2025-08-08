@@ -1,12 +1,11 @@
 #pragma once
-
 #include"../SceneBase.h"
 
-class Explanat : public SceneBase
+class Finish : public SceneBase
 {
 public:
-	Explanat();
-	~Explanat()override;
+	Finish();
+	~Finish();
 
 	void Load(void)override;
 	void Init(void)override;
@@ -16,10 +15,5 @@ public:
 
 private:
 	int img_;
-	int bottonImg_[2];
-	float s_;
-	bool prevTrg_,nowTrg_;
-
-	bool IsAnyXboxController();
+	float scale_;
 };
-
