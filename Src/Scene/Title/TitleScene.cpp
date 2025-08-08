@@ -22,7 +22,9 @@ void TitleScene::Load(void)
 void TitleScene::Init(void)
 {
 	title_Img = LoadGraph("Data/Image/Title.png");
-	con_Img = LoadGraph("Data/Image/co.png");
+	con_Img = LoadGraph("Data/Image/Title_use.png");
+	play_Img = LoadGraph("Data/Image/Play.png");
+	eixt_Img = LoadGraph("Data/Image/Exit.png");
 
 	modeId_ = MODE::PLAY;
 
@@ -62,11 +64,17 @@ void TitleScene::Update(void)
 		{
 			SceneManager::GetInstance().ChangeScene(SCENE_ID::GAME);
 		}
-		
+
+		break;
 	case TitleScene::MODE::EXIT:
-		if (keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::END , KeyConfig::JOYPAD_NO::PAD1))
+		IsEnd_ = true;
+
+		if (IsEnd_ == true)
 		{
-			Application::GetInstance().End();
+			if(keyCon.IsTrgDown(KeyConfig::CONTROL_TYPE::EXITDECISION, KeyConfig::JOYPAD_NO::PAD1))
+			{
+				Application::GetInstance().End();
+			}
 		}
 		break;
 	case TitleScene::MODE::OPERATION:
@@ -96,15 +104,19 @@ void TitleScene::Draw(void)
 	{
 	case TitleScene::MODE::PLAY:
 		DrawString(0, 0, "ゲームシーン", 0xffffff);
+		DrawExtendGraph(550, Application::SCREEN_SIZE_Y / 2+200 , 950, 1000, play_Img, true);
+		
 		break;
 	case TitleScene::MODE::EXIT:
-		DrawString(0, 0, "タイトルへ", 0xffffff);
+		DrawString(0, 0, "タイトルへ", 0xffffff); 
+		DrawExtendGraph(600, Application::SCREEN_SIZE_Y / 2+200, 900, 1000, eixt_Img, true);
+
 		break;
 	case TitleScene::MODE::OPERATION:
 		DrawString(0, 0, "説明へ", 0xffffff);
 		
-		DrawGraph(Application::SCREEN_SIZE_X / 2 -400, Application::SCREEN_SIZE_Y / 2 -200, con_Img, true);
-
+		//DrawGraph(Application::SCREEN_SIZE_X / 2 -400, Application::SCREEN_SIZE_Y / 2 -200, con_Img, true);
+		DrawExtendGraph(Application::SCREEN_SIZE_X / 2 - 500, Application::SCREEN_SIZE_Y / 2 - 200, 1250, 900, con_Img, true);
 
 		
 		break;
@@ -116,4 +128,5 @@ void TitleScene::Release(void)
 {
 
 	DeleteGraph(title_Img);
+	DeleteGraph(con_Img);
 }
