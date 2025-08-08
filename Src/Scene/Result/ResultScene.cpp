@@ -39,7 +39,7 @@ void ResultScene::Update(void)
 	for (auto& a : anime_) { a.second->Update(); }
 
 	prevTrg_ = nowTrg_;
-	nowTrg_ = (CheckHitKeyAll() == 1) ? true : false;
+	nowTrg_ = (CheckHitKey(KEY_INPUT_SPACE)==0) ?false : true;
 
 	if (!prevTrg_ && nowTrg_) {
 		SceneManager::GetInstance().ChangeScene(SCENE_ID::TITLE);
