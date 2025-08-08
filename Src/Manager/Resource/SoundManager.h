@@ -82,6 +82,7 @@ public:
 	/// <param name="frontPos">前方方向(カメラ注視点)</param>
 	void Set3DListenPosAndFrontPos(VECTOR pos, VECTOR frontPos);
 
+	void DeletePlayMap(void);
 private:
 	// 静的インスタンス
 	static SoundManager* instance_;
