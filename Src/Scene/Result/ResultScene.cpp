@@ -5,13 +5,16 @@
 #include"../../Utility/Utility.h"
 #include"../../Application.h"
 #include"../SceneManager/SceneManager.h";
+#include"../../Manager/Resource/SoundManager.h";
 
 ResultScene::ResultScene()
 {
+	SoundManager::GetInstance().Play(SoundManager::SRC::RESULT_BGM, Sound::TIMES::LOOP);
 }
 
 ResultScene::~ResultScene()
 {
+	SoundManager::GetInstance().Stop(SoundManager::SRC::RESULT_BGM);
 }
 
 void ResultScene::Load(void)

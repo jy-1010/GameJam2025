@@ -15,6 +15,7 @@ public:
 		RESULT_BGM,
 
 		HIPDROP_SE,	//ヒップドロップ
+		DAMAGE_SE,
 
 		MAX
 

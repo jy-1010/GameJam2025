@@ -103,6 +103,7 @@ void PlayerBase::Damage(VECTOR vec)
 	hp_--;
 	anime_->Play((int)ANIM_TYPE::HIT_REACT,false);
 	KeyConfig::GetInstance().PadVibration(static_cast<KeyConfig::JOYPAD_NO>(playerNum_ + 1), 500, 300);
+	SoundManager::GetInstance().Play(SoundManager::SRC::DAMAGE_SE, Sound::TIMES::ONCE);
 	lifeUI_->SetLife(hp_);	//ƒ‰ƒCƒtUI‚ÉŒ»İ‚ÌHP‚ğİ’è
 	if (hp_ <= 0)
 	{
