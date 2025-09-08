@@ -30,6 +30,8 @@ public:
 	// コンストラクタ
 	Sound(TYPE type, const std::string& path);
 
+	void Copy(std::shared_ptr<Sound> sound);
+
 	// デストラクタ
 	~Sound(void);
 

@@ -36,6 +36,17 @@ Sound::Sound(TYPE type, const std::string& path)
 	maxVolume_ = 255;
 }
 
+void Sound::Copy(std::shared_ptr<Sound> sound)
+{
+	soundType_ = sound->soundType_;
+	path_ = sound->path_;
+	handleId_ = sound->handleId_;
+	pos_ = sound->pos_;
+	radius_ = 0.0f;
+	pitch_ = 0.0f;
+	maxVolume_ = 255;
+}
+
 Sound::~Sound(void)
 {
 
